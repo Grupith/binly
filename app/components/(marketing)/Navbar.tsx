@@ -12,6 +12,8 @@ import {
 import { cn } from "@/lib/utils";
 import { Menu } from "lucide-react";
 import { Button } from "../ui/button";
+import Link from "next/link";
+import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
 
 const components = [
   {
@@ -65,6 +67,9 @@ const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -77,11 +82,32 @@ const Navbar = () => {
     };
   }, []);
 
-  return (
-    <nav className="w-full flex items-center justify-between md:justify-around px-6 py-4 border-b">
-      {/* Logo */}
-      <div className="text-2xl font-bold text-sky-600">Binly</div>
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      if (currentScrollY > lastScrollY.current && currentScrollY > 100) {
+        setIsVisible(false);
+      } else {
+        setIsVisible(true);
+      }
+      lastScrollY.current = currentScrollY;
+    };
 
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <nav
+      className={cn(
+        "w-full flex items-center justify-between md:justify-around px-6 py-4 border-b bg-white transition-transform duration-300 sticky top-0 z-50",
+        { "-translate-y-full": !isVisible }
+      )}
+    >
+      {/* Logo */}
+      <Link href="/" className="flex items-center">
+        <div className="text-2xl font-bold text-sky-600">Binly</div>
+      </Link>
       {/* Nav Menu */}
       <div className="hidden md:flex justify-center">
         <NavigationMenu>
@@ -103,12 +129,20 @@ const Navbar = () => {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuLink href="#pricing" className="px-4 py-2">
+              <NavigationMenuLink
+                href="/about"
+                className={navigationMenuTriggerStyle()}
+              >
+                About
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink href="/#pricing" className="px-4 py-2">
                 Pricing
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuLink href="#contact" className="px-4 py-2">
+              <NavigationMenuLink href="/#contact" className="px-4 py-2">
                 Contact
               </NavigationMenuLink>
             </NavigationMenuItem>
@@ -136,6 +170,7 @@ const Navbar = () => {
               <li>
                 <a
                   href="#features"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="text-sm font-medium text-gray-700 hover:underline"
                 >
                   Features
@@ -144,6 +179,7 @@ const Navbar = () => {
               <li>
                 <a
                   href="#pricing"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="text-sm font-medium text-gray-700 hover:underline"
                 >
                   Pricing
@@ -152,6 +188,7 @@ const Navbar = () => {
               <li>
                 <a
                   href="#contact"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="text-sm font-medium text-gray-700 hover:underline"
                 >
                   Contact

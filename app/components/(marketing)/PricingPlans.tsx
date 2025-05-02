@@ -80,7 +80,7 @@ const PricingPlans = () => {
           Pricing Plans
         </h2>
         <p className="text-gray-700">
-          Always free to start. Upgrade only when you're ready.
+          Always free to start. Upgrade only when you`&apos;re ready.
         </p>
       </div>
       <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
