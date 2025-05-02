@@ -10,56 +10,118 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { cn } from "@/lib/utils";
-import { Menu } from "lucide-react";
+import { Factory, Menu, Stethoscope } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import { navigationMenuTriggerStyle } from "@/components/ui/navigation-menu";
+import {
+  Boxes,
+  Building2,
+  School,
+  ShoppingCart,
+  Warehouse,
+  CheckCircle,
+  QrCode,
+  FileSpreadsheet,
+  BellRing,
+  ListTodo,
+  History,
+  Users,
+} from "lucide-react";
 
 const components = [
   {
     title: "Organizing",
     href: "#feature-organizing",
     description: "Easily upload and organize your inventory by space or job.",
+    icon: Boxes,
   },
   {
     title: "Smart Locations",
     href: "#feature-locations",
     description: "Assign items to shelves, bins, or trucks for easy access.",
+    icon: Warehouse,
   },
   {
     title: "Check In & Out",
     href: "#feature-checkin",
     description: "Track usage and returns with due dates and logs.",
+    icon: CheckCircle,
   },
   {
     title: "Barcode Scanning",
     href: "#feature-barcodes",
     description: "Scan items with QR or barcode labels for quick access.",
+    icon: QrCode,
   },
   {
     title: "CSV Import",
     href: "#feature-bulk-entry",
     description: "Bulk upload your inventory from spreadsheets in seconds.",
+    icon: FileSpreadsheet,
   },
   {
     title: "Smart Alerts",
     href: "#feature-alerts",
     description: "Get notified about overdue items or low stock.",
+    icon: BellRing,
   },
   {
     title: "Pick Lists",
     href: "#feature-picklists",
     description: "Build and reuse material kits for jobs or repeat tasks.",
+    icon: ListTodo,
   },
   {
     title: "Usage Logs",
     href: "#feature-logs",
     description: "View item history by user, status, and job.",
+    icon: History,
   },
   {
     title: "Role-Based Access",
     href: "#feature-access",
     description: "Assign permissions by team role or workspace.",
+    icon: Users,
+  },
+];
+
+const industries = [
+  {
+    title: "Government",
+    href: "/industries/government",
+    description: "Track assets across departments with compliance in mind.",
+    icon: Building2,
+  },
+  {
+    title: "Construction",
+    href: "/industries/construction",
+    description: "Manage tools, gear, and job site inventory with ease.",
+    icon: Warehouse,
+  },
+  {
+    title: "Education",
+    href: "/industries/education",
+    description: "Keep tabs on school supplies, tech, and classroom gear.",
+    icon: School,
+  },
+  {
+    title: "Retail",
+    href: "/industries/retail",
+    description: "Organize backroom stock and store supplies for your team.",
+    icon: ShoppingCart,
+  },
+  {
+    title: "Healthcare",
+    href: "/industries/healthcare",
+    description:
+      "Track medical kits, supplies, and mobile equipment across teams.",
+    icon: Stethoscope, // or HeartPulse, Syringe, FirstAidKit, depending on your Lucide version
+  },
+  {
+    title: "Manufacturing",
+    href: "/industries/manufacturing",
+    description: "Track tools, parts, and production gear across workstations.",
+    icon: Factory, // Use a relevant Lucide icon here
   },
 ];
 
@@ -116,26 +178,37 @@ const Navbar = () => {
               <NavigationMenuTrigger>Features</NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                  {components.map((component) => (
+                  {components.map(({ title, href, description, icon }) => (
                     <ListItem
-                      key={component.title}
-                      title={component.title}
-                      href={component.href}
+                      key={title}
+                      title={title}
+                      href={href}
                       className="bg-gray-50 border border-gray-100 hover:bg-sky-50 transition"
+                      icon={icon}
                     >
-                      {component.description}
+                      {description}
                     </ListItem>
                   ))}
                 </ul>
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuLink
-                href="/about"
-                className={navigationMenuTriggerStyle()}
-              >
-                About
-              </NavigationMenuLink>
+              <NavigationMenuTrigger>Industries</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                  {industries.map(({ title, href, description, icon }) => (
+                    <ListItem
+                      key={title}
+                      title={title}
+                      href={href}
+                      className="bg-gray-50 border border-gray-100 hover:bg-sky-50 transition"
+                      icon={icon}
+                    >
+                      {description}
+                    </ListItem>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink href="/#pricing" className="px-4 py-2">
@@ -238,8 +311,10 @@ const Navbar = () => {
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
+  React.ComponentPropsWithoutRef<"a"> & {
+    icon?: React.ComponentType<{ className?: string }>;
+  }
+>(({ className, title, children, icon: Icon, ...props }, ref) => {
   return (
     <li>
       <NavigationMenuLink asChild>
@@ -251,7 +326,10 @@ const ListItem = React.forwardRef<
           )}
           {...props}
         >
-          <div className="text-sm font-medium leading-none">{title}</div>
+          <div className="flex items-center gap-2 text-sm font-medium leading-none">
+            {Icon && <Icon className="h-4 w-4 text-sky-600" />}
+            {title}
+          </div>
           <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
             {children}
           </p>
