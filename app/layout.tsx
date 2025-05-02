@@ -37,7 +37,11 @@ export default function RootLayout({
         <meta property="og:url" content="https://binly.app" />
         <meta name="twitter:card" content="summary_large_image" />
       </head>
-      <body className={`${poppins.variable} antialiased`}>{children}</body>
+      <body
+        className={`${poppins.variable} antialiased overflow-x-hidden max-w-screen`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
