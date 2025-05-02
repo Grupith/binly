@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧱 Binly Inventory
 
-## Getting Started
+**Binly** is a modern, lightweight inventory management web app for garages, shops, job sites, and small teams. Easily track tools, materials, and equipment — without spreadsheets or setup headaches.
 
-First, run the development server:
+## 🧩 Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Frontend:** Next.js 15, TypeScript, React 19, Tailwind CSS, Shadcn/UI
+- **Backend:** Firebase (Auth, Firestore, Hosting, Functions)
+- **Other:** Stripe Payments, React Context, Cloudflare Domain
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📦 Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Add, update, and organize items by workspace
+- Check-in/check-out system with smart status tracking
+- Barcode/QR support
+- Role-based access for teams
+- Reusable pick lists
+- Usage logs and alerts for low stock
+- Simple pricing plans
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 📂 File Structure
 
-## Learn More
+- `app/` - Pages and UI components
+- `components/` - Shared UI components
+- `lib/` - Utility functions
+- `public/` - Static assets (logo, favicons, etc.)
 
-To learn more about Next.js, take a look at the following resources:
+## 🌐 Live URL
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+[https://binlyinventory.com](https://binlyinventory.com)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## ✨ Credits
 
-## Deploy on Vercel
+Built by Dylan Koss.  
+Inspired by the need for fast, intuitive organization tools for real-world teams.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 📜 License
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
