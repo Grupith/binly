@@ -121,6 +121,7 @@ const Navbar = () => {
                       key={component.title}
                       title={component.title}
                       href={component.href}
+                      className="bg-gray-50 border border-gray-100 hover:bg-sky-50 transition"
                     >
                       {component.description}
                     </ListItem>
@@ -152,7 +153,7 @@ const Navbar = () => {
       <div className="md:hidden relative flex items-center">
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="text-gray-600 focus:outline-none"
+          className="text-gray-600 focus:outline-none rounded-md shadow-md transition duration-200 ease-in-out p-2"
         >
           <Menu className="w-6 h-6" />
         </button>
@@ -160,39 +161,59 @@ const Navbar = () => {
           href="/login"
           className="ml-4 text-sm font-medium text-gray-700 hover:underline md:hidden"
         ></a>
-        <Button variant="outline">Login</Button>
+
         {mobileMenuOpen && (
           <div
             ref={menuRef}
-            className="absolute top-full right-4 mt-2 w-64 rounded-md border bg-white shadow-md md:hidden z-50"
+            className="absolute top-full right-2 mt-3 w-64 rounded-xl border border-gray-200 bg-white shadow-lg transition-all duration-200 ease-in-out md:hidden z-50"
           >
-            <ul className="flex flex-col gap-2 p-4">
+            <ul className="flex flex-col gap-3 px-4 py-6">
               <li>
-                <a
+                <Link
                   href="#features"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-sm font-medium text-gray-700 hover:underline"
+                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-50 transition"
                 >
                   Features
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#pricing"
+                <Link
+                  href="/#pricing"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-sm font-medium text-gray-700 hover:underline"
+                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-50 transition"
                 >
                   Pricing
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#contact"
+                <Link
+                  href="/#contact"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-sm font-medium text-gray-700 hover:underline"
+                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-50 transition"
                 >
                   Contact
-                </a>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-50 transition"
+                >
+                  About
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/login"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-50 transition"
+                >
+                  <Button variant="outline" className="w-full">
+                    Login
+                  </Button>
+                </Link>
               </li>
             </ul>
           </div>
