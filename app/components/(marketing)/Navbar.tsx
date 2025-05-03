@@ -254,11 +254,19 @@ const Navbar = () => {
         </NavigationMenu>
       </div>
       <div className="md:hidden relative flex items-center">
+        {mounted && (
+          <Switch
+            checked={darkMode}
+            onCheckedChange={(checked) => setDarkMode(checked)}
+            aria-label="Toggle dark mode"
+            className="mr-3"
+          />
+        )}
         <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="text-gray-600 focus:outline-none rounded-md shadow-md transition duration-200 ease-in-out p-2"
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+          className="text-gray-600 focus:outline-none rounded-md  transition duration-200 ease-in-out p-2"
         >
-          <Menu className="w-6 h-6" />
+          <Menu className="w-6 h-6 dark:text-gray-100" />
         </button>
         <a
           href="/login"
@@ -285,7 +293,7 @@ const Navbar = () => {
                     {components.map(({ title, href }) => (
                       <li key={title}>
                         <Link
-                          href={href}
+                          href={href.startsWith("#") ? `/${href}` : href}
                           onClick={() => {
                             setMobileMenuOpen(false);
                             setShowFeaturesDropdown(false);
@@ -315,7 +323,7 @@ const Navbar = () => {
                     {industries.map(({ title, href }) => (
                       <li key={title}>
                         <Link
-                          href={href}
+                          href={href.startsWith("#") ? `/${href}` : href}
                           onClick={() => {
                             setMobileMenuOpen(false);
                             setShowIndustriesDropdown(false);
