@@ -18,7 +18,7 @@ const plans = [
     highlight: false,
   },
   {
-    name: "Pro (Individual)",
+    name: "Pro (Personal)",
     price: "$7/mo",
     description:
       "Ideal for personal projects, small teams, or solo business owners tracking inventory across a couple of spaces.",
