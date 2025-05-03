@@ -84,8 +84,9 @@ const PrivacyPolicyPage = () => {
             7. Changes to This Policy
           </h2>
           <p>
-            We may update this Privacy Policy from time to time. We’ll notify
-            users by updating the “Last Updated” date at the top of this page.
+            We may update this Privacy Policy from time to time. We&apos;ll
+            notify users by updating the “Last Updated” date at the top of this
+            page.
           </p>
         </section>
 

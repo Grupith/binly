@@ -10,20 +10,20 @@ const Healthcare = () => {
   return (
     <>
       <Navbar />
-      <main className="bg-white text-gray-800">
-        <section className="py-20 px-6 bg-fuchsia-50">
+      <main className="bg-white text-gray-800 dark:bg-gray-900 dark:text-gray-100">
+        <section className="py-20 px-6 bg-fuchsia-100 dark:bg-fuchsia-900">
           <div className="max-w-5xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Inventory Software for Healthcare Teams
             </h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto dark:text-gray-300">
               Keep your medical equipment, supplies, and kits organized—whether
-              you`&apos;re managing a small clinic or a mobile health unit.
+              you&apos;re managing a small clinic or a mobile health unit.
             </p>
             <div className="mt-8">
               <Link
                 href="/"
-                className="inline-block bg-fuchsia-600 text-white font-medium px-6 py-3 rounded-md hover:bg-sky-700 transition"
+                className="inline-block bg-fuchsia-600 text-white font-medium px-6 py-3 rounded-md hover:bg-fuchsia-700 dark:hover:bg-fuchsia-500 transition"
               >
                 Try Binly Free
               </Link>
@@ -31,7 +31,7 @@ const Healthcare = () => {
           </div>
         </section>
 
-        <section className="py-20 px-6">
+        <section className="py-20 px-6 dark:bg-gray-800">
           <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
             <div>
               <Image
@@ -46,11 +46,11 @@ const Healthcare = () => {
               <h2 className="text-3xl font-bold mb-4">
                 Manage Supplies Across Rooms and Teams
               </h2>
-              <p className="text-gray-700 mb-4">
+              <p className="text-gray-700 mb-4 dark:text-gray-300">
                 From PPE and surgical tools to medications and tech gear, Binly
                 helps healthcare teams track usage, location, and availability.
               </p>
-              <ul className="list-disc list-inside space-y-2 text-gray-700">
+              <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
                 <li>Check in/out critical equipment between shifts</li>
                 <li>Assign items to departments, rooms, or mobile kits</li>
                 <li>Log usage history and track sterilization status</li>
@@ -61,27 +61,27 @@ const Healthcare = () => {
           </div>
         </section>
 
-        <section className="bg-fuchsia-100 py-20 px-6">
+        <section className="bg-fuchsia-100 py-20 px-6 dark:bg-fuchsia-950">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-4">
               Built for Clinics, Labs, and Mobile Providers
             </h2>
-            <p className="text-gray-700 max-w-2xl mx-auto">
-              Whether you`&apos;re working out of a hospital wing or a community
-              van, Binly`&apos;s flexible workspace model makes it easy to stay
+            <p className="text-gray-700 max-w-2xl mx-auto dark:text-gray-300">
+              Whether you&apos;re working out of a hospital wing or a community
+              van, Binly&apos;s flexible workspace model makes it easy to stay
               organized.
             </p>
           </div>
         </section>
 
-        <section className="py-20 px-6 text-center">
+        <section className="py-20 px-6 text-center dark:bg-gray-900">
           <h2 className="text-3xl font-bold mb-4">Start Free for Your Team</h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 mb-6 dark:text-gray-300">
             No training or setup required—get started in minutes.
           </p>
           <Link
             href="/"
-            className="inline-block bg-fuchsia-600 text-white font-medium px-6 py-3 rounded-md hover:bg-fuchsia-700 transition"
+            className="inline-block bg-fuchsia-600 text-white font-medium px-6 py-3 rounded-md hover:bg-fuchsia-700 dark:hover:bg-fuchsia-500 transition"
           >
             Start Free Today
           </Link>

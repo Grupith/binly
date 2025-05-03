@@ -64,7 +64,7 @@ const TermsPage = () => {
           <h2 className="text-xl font-semibold mb-2">6. Changes to Terms</h2>
           <p>
             Binly reserves the right to update these Terms at any time. We will
-            notify users by updating the `&apos;Last Updated`&apos; date at the
+            notify users by updating the &apos;Last Updated&apos; date at the
             top of this page.
           </p>
         </section>
@@ -77,7 +77,7 @@ const TermsPage = () => {
               href="mailto:support@binlyinventory.com"
               className="text-sky-600 underline"
             >
-              support@binlyinventory.com
+              binlyinventory@gmail.com
             </a>
             .
           </p>

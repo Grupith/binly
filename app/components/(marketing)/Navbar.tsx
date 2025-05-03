@@ -153,7 +153,12 @@ const Navbar = () => {
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+      const target = event.target as Node;
+      if (
+        menuRef.current &&
+        !menuRef.current.contains(target) &&
+        !(target as HTMLElement).closest("button[data-menu-toggle]")
+      ) {
         setMobileMenuOpen(false);
       }
     };
@@ -190,9 +195,9 @@ const Navbar = () => {
         <Image
           src={logo}
           alt="binly logo"
-          height={40}
-          width={40}
-          className="rounded-md p-1 shadow-md mr-2"
+          height={36}
+          width={36}
+          className="rounded-md mr-2"
         />
         <div className="text-2xl font-bold text-sky-600">Binly</div>
       </Link>
@@ -265,6 +270,7 @@ const Navbar = () => {
         <button
           onClick={() => setMobileMenuOpen((prev) => !prev)}
           className="text-gray-600 focus:outline-none rounded-md  transition duration-200 ease-in-out p-2"
+          data-menu-toggle
         >
           <Menu className="w-6 h-6 dark:text-gray-100" />
         </button>
