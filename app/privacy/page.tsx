@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Footer from "../components/(marketing)/Footer";
+import Footer from "../../components/(marketing)/Footer";
 
 const PrivacyPolicyPage = () => {
   return (

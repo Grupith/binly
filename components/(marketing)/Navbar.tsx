@@ -185,6 +185,7 @@ const Navbar = () => {
 
   return (
     <nav
+      aria-label="Navigation menu"
       className={cn(
         "w-full flex items-center justify-between md:justify-around px-6 py-4 border-b bg-white text-gray-900 dark:bg-gray-900 dark:text-white transition-transform duration-300 sticky top-0 z-50",
         { "-translate-y-full": !isVisible }
@@ -206,11 +207,21 @@ const Navbar = () => {
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="dark:bg-gray-900">
+              <NavigationMenuTrigger
+                className="dark:bg-gray-900"
+                aria-label="Features"
+                aria-expanded="false"
+                aria-haspopup="true"
+                aria-controls="desktop-features-dropdown"
+                role="button"
+              >
                 Features
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                <ul
+                  id="desktop-features-dropdown"
+                  className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]"
+                >
                   {components.map(({ title, href, description, icon }) => (
                     <ListItem
                       key={title}
@@ -218,6 +229,7 @@ const Navbar = () => {
                       href={href}
                       className="bg-gray-50 dark:bg-gray-900 dark:border-gray-800 border border-gray-100 hover:bg-sky-50 dark:hover:bg-sky-900 transition"
                       icon={icon}
+                      aria-label={title}
                     >
                       {description}
                     </ListItem>
@@ -226,11 +238,21 @@ const Navbar = () => {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="dark:bg-gray-900">
+              <NavigationMenuTrigger
+                className="dark:bg-gray-900"
+                aria-label="Industries"
+                aria-expanded="false"
+                aria-haspopup="true"
+                aria-controls="desktop-industries-dropdown"
+                role="button"
+              >
                 Industries
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                <ul
+                  id="desktop-industries-dropdown"
+                  className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]"
+                >
                   {industries.map(({ title, href, description, icon }) => (
                     <ListItem
                       key={title}
@@ -238,6 +260,7 @@ const Navbar = () => {
                       href={href}
                       className="bg-gray-50 dark:bg-gray-900 dark:border-gray-800 border border-gray-100 hover:bg-sky-50 dark:hover:bg-sky-900/90 transition"
                       icon={icon}
+                      aria-label={title}
                     >
                       {description}
                     </ListItem>
@@ -246,12 +269,20 @@ const Navbar = () => {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuLink href="/#pricing" className="px-4 py-2">
+              <NavigationMenuLink
+                href="/#pricing"
+                className="px-4 py-2"
+                aria-label="Pricing"
+              >
                 Pricing
               </NavigationMenuLink>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuLink href="/#contact" className="px-4 py-2">
+              <NavigationMenuLink
+                href="/#contact"
+                className="px-4 py-2"
+                aria-label="Contact"
+              >
                 Contact
               </NavigationMenuLink>
             </NavigationMenuItem>
@@ -271,12 +302,14 @@ const Navbar = () => {
           onClick={() => setMobileMenuOpen((prev) => !prev)}
           className="text-gray-600 focus:outline-none rounded-md  transition duration-200 ease-in-out p-2"
           data-menu-toggle
+          aria-label="Open navigation menu"
         >
           <Menu className="w-6 h-6 dark:text-gray-100" />
         </button>
         <a
           href="/login"
           className="ml-4 text-sm font-medium text-gray-700 dark:text-gray-200 hover:underline md:hidden"
+          aria-label="Login"
         ></a>
 
         {mobileMenuOpen && (
@@ -289,13 +322,20 @@ const Navbar = () => {
                 <button
                   onClick={() => setShowFeaturesDropdown(!showFeaturesDropdown)}
                   className="flex justify-between items-center w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
+                  aria-label="Features"
+                  aria-expanded={showFeaturesDropdown}
+                  aria-controls="mobile-features-dropdown"
+                  role="button"
                 >
                   Features
                   <span>{showFeaturesDropdown ? "▲" : "▼"}</span>
                 </button>
 
                 {showFeaturesDropdown && (
-                  <ul className="ml-4 mt-2 space-y-2">
+                  <ul
+                    className="ml-4 mt-2 space-y-2"
+                    id="mobile-features-dropdown"
+                  >
                     {components.map(({ title, href }) => (
                       <li key={title}>
                         <Link
@@ -305,6 +345,7 @@ const Navbar = () => {
                             setShowFeaturesDropdown(false);
                           }}
                           className="block w-full text-left px-3 py-1 text-sm text-gray-600 dark:text-gray-300 hover:underline"
+                          aria-label={title}
                         >
                           {title}
                         </Link>
@@ -319,13 +360,20 @@ const Navbar = () => {
                     setShowIndustriesDropdown(!showIndustriesDropdown)
                   }
                   className="flex justify-between items-center w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
+                  aria-label="Industries"
+                  aria-expanded={showIndustriesDropdown}
+                  aria-controls="mobile-industries-dropdown"
+                  role="button"
                 >
                   Industries
                   <span>{showIndustriesDropdown ? "▲" : "▼"}</span>
                 </button>
 
                 {showIndustriesDropdown && (
-                  <ul className="ml-4 mt-2 space-y-2">
+                  <ul
+                    className="ml-4 mt-2 space-y-2"
+                    id="mobile-industries-dropdown"
+                  >
                     {industries.map(({ title, href }) => (
                       <li key={title}>
                         <Link
@@ -335,6 +383,7 @@ const Navbar = () => {
                             setShowIndustriesDropdown(false);
                           }}
                           className="block w-full text-left px-3 py-1 text-sm text-gray-600 dark:text-gray-300 hover:underline"
+                          aria-label={title}
                         >
                           {title}
                         </Link>
@@ -348,6 +397,7 @@ const Navbar = () => {
                   href="/#pricing"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
+                  aria-label="Pricing"
                 >
                   Pricing
                 </Link>
@@ -357,6 +407,7 @@ const Navbar = () => {
                   href="/#contact"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
+                  aria-label="Contact"
                 >
                   Contact
                 </Link>
@@ -366,6 +417,7 @@ const Navbar = () => {
                   href="/about"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
+                  aria-label="About"
                 >
                   About
                 </Link>
@@ -375,6 +427,7 @@ const Navbar = () => {
                   href="/login"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
+                  aria-label="Login"
                 >
                   <Button variant="outline" className="w-full">
                     Login
@@ -398,12 +451,17 @@ const Navbar = () => {
             />
           )}
         </div>
-        <a href="/login" className="text-sm font-medium hover:underline">
+        <a
+          href="/login"
+          className="text-sm font-medium hover:underline"
+          aria-label="Login"
+        >
           Login
         </a>
         <a
           href="/get-started"
           className="rounded-md px-4 py-2 text-sm font-medium bg-sky-600 hover:bg-sky-600/90 text-white transition-colors shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
+          aria-label="Get Started"
         >
           Get Started
         </a>
@@ -424,9 +482,10 @@ const ListItem = React.forwardRef<
         <a
           ref={ref}
           className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-sky-50 dark:hover:bg-sky-900 focus:bg-sky-100 dark:focus:bg-sky-800 focus:border-sky-500 focus:ring-2 focus:ring-sky-500 focus:outline-none",
             className
           )}
+          aria-label={title}
           {...props}
         >
           <div className="flex items-center gap-2 text-sm font-medium leading-none text-gray-800 dark:text-white">

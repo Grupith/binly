@@ -3,8 +3,8 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import dashboardMockup from "@/public/images/dashboardMockup.jpg";
-import Footer from "@/app/components/(marketing)/Footer";
-import Navbar from "@/app/components/(marketing)/Navbar";
+import Footer from "@/components/(marketing)/Footer";
+import Navbar from "@/components/(marketing)/Navbar";
 
 const Construction = () => {
   return (
