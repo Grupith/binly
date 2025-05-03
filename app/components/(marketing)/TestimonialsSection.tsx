@@ -21,12 +21,12 @@ const testimonials = [
 
 const TestimonialsSection = () => {
   return (
-    <section className="py-20 bg-gray-100 px-4">
+    <section className="py-20 bg-gray-100 dark:bg-gray-900 px-4">
       <div className="max-w-5xl mx-auto text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
           What people are saying
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-300">
           Real feedback from people using Binly at home and on the job.
         </p>
       </div>
@@ -34,7 +34,7 @@ const TestimonialsSection = () => {
         {testimonials.map((t, i) => (
           <div
             key={i}
-            className="bg-white p-6 rounded-xl shadow border border-gray-100 text-left flex flex-col justify-between h-full"
+            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow border border-gray-100 dark:border-gray-700 text-left flex flex-col justify-between h-full"
           >
             <div className="flex items-center gap-4 mb-4">
               <Avatar>
@@ -43,11 +43,17 @@ const TestimonialsSection = () => {
               </Avatar>
 
               <div>
-                <p className="font-semibold text-gray-900">{t.name}</p>
-                <p className="text-sm text-gray-500">{t.role}</p>
+                <p className="font-semibold text-gray-900 dark:text-white">
+                  {t.name}
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {t.role}
+                </p>
               </div>
             </div>
-            <p className="text-gray-800 italic mb-4 flex-1">“{t.quote}”</p>
+            <p className="text-gray-800 dark:text-gray-300 italic mb-4 flex-1">
+              “{t.quote}”
+            </p>
             <div className="flex text-yellow-500">
               {Array.from({ length: 5 }).map((_, idx) => (
                 <svg

@@ -6,7 +6,7 @@ import Footer from "../components/(marketing)/Footer";
 const PrivacyPolicyPage = () => {
   return (
     <>
-      <main className="max-w-4xl mx-auto px-6 py-20 text-gray-800">
+      <main className="max-w-4xl mx-auto px-6 py-20 text-gray-800 dark:text-gray-300">
         <h1 className="text-3xl md:text-4xl font-bold mb-6">Privacy Policy</h1>
         <p className="mb-4 text-sm text-gray-500">Last updated: May 2, 2025</p>
 
@@ -24,7 +24,7 @@ const PrivacyPolicyPage = () => {
             2. Information We Collect
           </h2>
           <p>We may collect the following types of information:</p>
-          <ul className="list-disc list-inside ml-4 mt-2 text-gray-700">
+          <ul className="list-disc list-inside ml-4 mt-2 text-gray-700 dark:text-gray-400">
             <li>Your name and email address when you create an account</li>
             <li>Inventory and usage data you input into the app</li>
             <li>Payment information when you subscribe to a paid plan</li>
@@ -37,7 +37,7 @@ const PrivacyPolicyPage = () => {
             3. How We Use Your Data
           </h2>
           <p>We use your information to:</p>
-          <ul className="list-disc list-inside ml-4 mt-2 text-gray-700">
+          <ul className="list-disc list-inside ml-4 mt-2 text-gray-700 dark:text-gray-400">
             <li>Provide and maintain your Binly account</li>
             <li>Improve the features and performance of our service</li>
             <li>Send updates and support communications</li>
@@ -51,7 +51,7 @@ const PrivacyPolicyPage = () => {
             We do not sell or share your personal information with third parties
             except:
           </p>
-          <ul className="list-disc list-inside ml-4 mt-2 text-gray-700">
+          <ul className="list-disc list-inside ml-4 mt-2 text-gray-700 dark:text-gray-400">
             <li>
               With service providers (e.g., payment processors, email tools)
             </li>
@@ -72,7 +72,7 @@ const PrivacyPolicyPage = () => {
         <section className="mb-10">
           <h2 className="text-xl font-semibold mb-2">6. Your Rights</h2>
           <p>You may:</p>
-          <ul className="list-disc list-inside ml-4 mt-2 text-gray-700">
+          <ul className="list-disc list-inside ml-4 mt-2 text-gray-700 dark:text-gray-400">
             <li>Access or update your personal information</li>
             <li>Request deletion of your data</li>
             <li>Unsubscribe from marketing communications</li>

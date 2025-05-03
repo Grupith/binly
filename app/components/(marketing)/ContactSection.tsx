@@ -4,12 +4,15 @@ import React from "react";
 
 const ContactSection = () => {
   return (
-    <section id="contact" className="py-20 px-4 bg-white">
+    <section
+      id="contact"
+      className="py-20 px-4 bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
+    >
       <div className="max-w-4xl mx-auto text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
           Contact Us
         </h2>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-300">
           Have a question, feedback, or need help? Reach out and we’ll get back
           to you within 1–2 business days.
         </p>
@@ -19,18 +22,18 @@ const ContactSection = () => {
           <input
             type="text"
             placeholder="Your Name"
-            className="w-full border rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+            className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
           />
           <input
             type="email"
             placeholder="Your Email"
-            className="w-full border rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+            className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
           />
         </div>
         <textarea
           rows={5}
           placeholder="Your Message"
-          className="w-full border rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
+          className="w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-sky-500"
         ></textarea>
         <button
           type="submit"

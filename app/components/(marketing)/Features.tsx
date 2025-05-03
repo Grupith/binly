@@ -7,12 +7,15 @@ import { Badge } from "@/components/ui/badge";
 
 const HowItWorksSection = () => {
   return (
-    <section id="how-it-works" className="px-6 py-12 max-w-full">
+    <section
+      id="how-it-works"
+      className="px-6 py-12 max-w-full dark:bg-gray-900"
+    >
       <div className="text-center mb-12 py-8">
-        <h1 className="text-3xl md:text-4xl font-semibold text-gray-900 mb-4">
+        <h1 className="text-3xl md:text-5xl font-semibold text-gray-900 dark:text-white mb-4">
           Features
         </h1>
-        <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-8">
+        <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-8">
           Track, assign, and manage your inventory with ease - no spreadsheets
           needed.
         </p>
@@ -20,17 +23,17 @@ const HowItWorksSection = () => {
       {/* Feature: Organizing */}
       <div
         id="feature-organizing"
-        className="w-screen -mx-6 px-6 bg-gray-100 py-16"
+        className="w-screen -mx-6 px-6 py-16 even:bg-gray-50 odd:bg-white dark:even:bg-gray-800 dark:odd:bg-gray-900"
       >
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <div className="text-left">
-            <p className="text-sky-600 uppercase font-semibold mb-2">
+            <p className="text-sky-600 dark:text-sky-400 uppercase font-semibold mb-2">
               Organizing
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-snug">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-snug">
               Organize and automate your inventory at the touch of a button.
             </h2>
-            <ul className="space-y-3 text-gray-700 mb-6">
+            <ul className="space-y-3 text-gray-700 dark:text-gray-300 mb-6">
               <li>📤 Easily upload your existing inventory list into Binly.</li>
               <li>🗂️ Organize items by location, category, or workspace.</li>
               <li>✅ Add item details with custom fields, images, and tags.</li>
@@ -51,7 +54,7 @@ const HowItWorksSection = () => {
       {/* Feature: Locations */}
       <div
         id="feature-locations"
-        className="w-screen -mx-6 px-6 bg-gray-50 py-16"
+        className="w-screen -mx-6 px-6 py-16 even:bg-gray-50 odd:bg-white dark:even:bg-gray-800 dark:odd:bg-gray-900"
       >
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center mt-20 md:flex-row-reverse">
           <div>
@@ -62,13 +65,13 @@ const HowItWorksSection = () => {
             />
           </div>
           <div className="text-left">
-            <p className="text-sky-600 uppercase font-semibold mb-2">
+            <p className="text-sky-600 dark:text-sky-400 uppercase font-semibold mb-2">
               Smart Locations
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-snug">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-snug">
               Know exactly where your gear lives.
             </h2>
-            <ul className="space-y-3 text-gray-700 mb-6">
+            <ul className="space-y-3 text-gray-700 dark:text-gray-300 mb-6">
               <li>📍 Assign items to shelves, bins, vehicles, or job sites.</li>
               <li>
                 🔍 Instantly locate items using location filters or QR scans.
@@ -82,23 +85,23 @@ const HowItWorksSection = () => {
       {/* Feature: Check In & Out */}
       <div
         id="feature-checkin"
-        className="w-screen -mx-6 px-6 bg-sky-100 py-16"
+        className="w-screen -mx-6 px-6 py-16 even:bg-gray-50 odd:bg-white dark:even:bg-gray-800 dark:odd:bg-gray-900"
       >
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center mt-20">
           <div className="text-left">
             <div className="flex items-center space-x-4 mb-4 ">
-              <p className="text-sky-600 uppercase font-semibold">
+              <p className="text-sky-600 dark:text-sky-400 uppercase font-semibold">
                 Check In & Out
               </p>
-              <Badge variant="default" className="bg-sky-600">
+              <Badge variant="default" className="bg-sky-600 text-white">
                 Pro
               </Badge>
             </div>
 
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-snug">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-snug">
               Track who has what — and when it’s due back.
             </h2>
-            <ul className="space-y-3 text-gray-700 mb-6">
+            <ul className="space-y-3 text-gray-700 dark:text-gray-300 mb-6">
               <li>🔁 Assign tools or materials to users or jobs.</li>
               <li>📅 Set due dates and get return alerts.</li>
               <li>📊 View a full log of usage history for every item.</li>
@@ -118,7 +121,7 @@ const HowItWorksSection = () => {
       {/* Feature: Barcode / QR Code Support */}
       <div
         id="feature-barcodes"
-        className="w-screen -mx-6 px-6 bg-gray-50 py-16"
+        className="w-screen -mx-6 px-6 py-16 even:bg-gray-50 odd:bg-white dark:even:bg-gray-800 dark:odd:bg-gray-900"
       >
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center mt-20">
           <div>
@@ -129,13 +132,13 @@ const HowItWorksSection = () => {
             />
           </div>
           <div className="text-left">
-            <p className="text-sky-600 uppercase font-semibold mb-2">
+            <p className="text-sky-600 dark:text-sky-400 uppercase font-semibold mb-2">
               Barcode / QR Code Support
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-snug">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-snug">
               Scan, search, and manage with ease.
             </h2>
-            <ul className="space-y-3 text-gray-700 mb-6">
+            <ul className="space-y-3 text-gray-700 dark:text-gray-300 mb-6">
               <li>📱 Scan items using any phone or tablet.</li>
               <li>🔗 Link QR codes to specific inventory items.</li>
               <li>🔍 Instantly pull up item details with a scan.</li>
@@ -147,17 +150,17 @@ const HowItWorksSection = () => {
       {/* Feature: Bulk Item Entry / CSV Import */}
       <div
         id="feature-bulk-entry"
-        className="w-screen -mx-6 px-6 bg-sky-50 py-16"
+        className="w-screen -mx-6 px-6 py-16 even:bg-gray-50 odd:bg-white dark:even:bg-gray-800 dark:odd:bg-gray-900"
       >
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center mt-20 md:flex-row-reverse">
           <div className="text-left">
-            <p className="text-sky-600 uppercase font-semibold mb-2">
+            <p className="text-sky-600 dark:text-sky-400 uppercase font-semibold mb-2">
               Bulk Item Entry
             </p>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-snug">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-snug">
               Import your inventory in seconds.
             </h2>
-            <ul className="space-y-3 text-gray-700 mb-6">
+            <ul className="space-y-3 text-gray-700 dark:text-gray-300 mb-6">
               <li>📥 Upload CSV files to populate your inventory instantly.</li>
               <li>🧩 Map fields to custom attributes and locations.</li>
               <li>📊 Reduce setup time for large inventories.</li>
@@ -178,7 +181,7 @@ const HowItWorksSection = () => {
       {/* Feature: Smart Alerts for Overdue Items */}
       <div
         id="feature-alerts"
-        className="w-screen -mx-6 px-6 bg-gray-100 py-16"
+        className="w-screen -mx-6 px-6 py-16 even:bg-gray-50 odd:bg-white dark:even:bg-gray-800 dark:odd:bg-gray-900"
       >
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center mt-20">
           <div>
@@ -190,17 +193,17 @@ const HowItWorksSection = () => {
           </div>
           <div className="text-left">
             <div className="flex items-center space-x-4 mb-4 ">
-              <p className="text-sky-600 uppercase font-semibold">
+              <p className="text-sky-600 dark:text-sky-400 uppercase font-semibold">
                 Smart Alerts{" "}
               </p>
-              <Badge variant="default" className="bg-sky-600">
+              <Badge variant="default" className="bg-sky-600 text-white">
                 Pro
               </Badge>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-snug">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-snug">
               Stay ahead with automated alerts.
             </h2>
-            <ul className="space-y-3 text-gray-700 mb-6">
+            <ul className="space-y-3 text-gray-700 dark:text-gray-300 mb-6">
               <li>⏰ Get notified when items are overdue or missing.</li>
               <li>📩 Send automatic reminders to users.</li>
               <li>📉 Avoid costly losses or delays.</li>
@@ -212,22 +215,22 @@ const HowItWorksSection = () => {
       {/* Feature: Pick Lists for Repeat Jobs */}
       <div
         id="feature-picklists"
-        className="w-screen -mx-6 px-6 bg-white py-16"
+        className="w-screen -mx-6 px-6 py-16 even:bg-gray-50 odd:bg-white dark:even:bg-gray-800 dark:odd:bg-gray-900"
       >
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center mt-20 md:flex-row-reverse">
           <div className="text-left">
             <div className="flex items-center space-x-4 mb-4 ">
-              <p className="text-sky-600 uppercase font-semibold">
+              <p className="text-sky-600 dark:text-sky-400 uppercase font-semibold">
                 Pick Lists{" "}
               </p>
-              <Badge variant="default" className="bg-sky-600">
+              <Badge variant="default" className="bg-sky-600 text-white">
                 Pro
               </Badge>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-snug">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-snug">
               Reuse kits and materials for frequent tasks.
             </h2>
-            <ul className="space-y-3 text-gray-700 mb-6">
+            <ul className="space-y-3 text-gray-700 dark:text-gray-300 mb-6">
               <li>📋 Create pre-defined lists of tools and materials.</li>
               <li>🚚 Quickly prepare jobs using saved templates.</li>
               <li>🔁 Reduce errors and time spent gathering items.</li>
@@ -246,7 +249,10 @@ const HowItWorksSection = () => {
       </div>
 
       {/* Feature: Usage & Status Logs */}
-      <div id="feature-logs" className="w-screen -mx-6 px-6 bg-sky-50 py-16">
+      <div
+        id="feature-logs"
+        className="w-screen -mx-6 px-6 py-16 even:bg-gray-50 odd:bg-white dark:even:bg-gray-800 dark:odd:bg-gray-900"
+      >
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center mt-20">
           <div>
             <Image
@@ -257,17 +263,17 @@ const HowItWorksSection = () => {
           </div>
           <div className="text-left">
             <div className="flex items-center space-x-4 mb-4 ">
-              <p className="text-sky-600 uppercase font-semibold">
+              <p className="text-sky-600 dark:text-sky-400 uppercase font-semibold">
                 Usage Logs{" "}
               </p>
-              <Badge variant="default" className="bg-sky-600">
+              <Badge variant="default" className="bg-sky-600 text-white">
                 Pro
               </Badge>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-snug">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-snug">
               See the full story of every item.
             </h2>
-            <ul className="space-y-3 text-gray-700 mb-6">
+            <ul className="space-y-3 text-gray-700 dark:text-gray-300 mb-6">
               <li>📝 Track check-in/out history and status updates.</li>
               <li>🧑‍🔧 See who used what, when, and where.</li>
               <li>📁 Download logs for accountability or records.</li>
@@ -277,21 +283,24 @@ const HowItWorksSection = () => {
       </div>
 
       {/* Feature: Role-Based Access */}
-      <div id="feature-access" className="w-screen -mx-6 px-6 bg-white py-16">
+      <div
+        id="feature-access"
+        className="w-screen -mx-6 px-6 py-16 even:bg-gray-50 odd:bg-white dark:even:bg-gray-800 dark:odd:bg-gray-900"
+      >
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center mt-20 md:flex-row-reverse">
           <div className="text-left">
             <div className="flex items-center space-x-4 mb-4 ">
-              <p className="text-sky-600 uppercase font-semibold">
+              <p className="text-sky-600 dark:text-sky-400 uppercase font-semibold">
                 Role-Based Access{" "}
               </p>
-              <Badge variant="default" className="bg-sky-600">
+              <Badge variant="default" className="bg-sky-600 text-white">
                 Pro
               </Badge>
             </div>
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4 leading-snug">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4 leading-snug">
               Keep control without slowing your team down.
             </h2>
-            <ul className="space-y-3 text-gray-700 mb-6">
+            <ul className="space-y-3 text-gray-700 dark:text-gray-300 mb-6">
               <li>
                 🔒 Control what employees or contractors can view or edit.
               </li>

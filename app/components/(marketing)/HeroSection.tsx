@@ -6,14 +6,14 @@ import Link from "next/link";
 
 const HeroSection = () => {
   return (
-    <section className="flex flex-col items-center justify-center py-24 bg-white text-center px-4">
-      <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+    <section className="flex flex-col items-center justify-center py-24 bg-white dark:bg-gray-900 text-center px-4">
+      <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
         Simple
         <span className="text-sky-600"> Inventory Management</span>
         <br />
         for homes, shops, and small teams
       </h1>
-      <p className="text-lg md:text-xl text-gray-700 mb-8 max-w-2xl">
+      <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 mb-8 max-w-2xl">
         Easily track tools, materials, and equipment — no training or tech
         skills needed.
       </p>
@@ -27,7 +27,7 @@ const HeroSection = () => {
       </div>
 
       {/* Demo video */}
-      <section className="w-full bg-white flex justify-center pt-20 pb-10 px-4">
+      <section className="w-full bg-white dark:bg-gray-900 flex justify-center pt-20 pb-10 px-4">
         <div className="w-full max-w-4xl aspect-video shadow-xl">
           <iframe
             className="w-full h-full rounded-lg shadow-lg"

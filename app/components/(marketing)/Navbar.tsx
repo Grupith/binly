@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { Switch } from "@/components/ui/switch";
+import { useTheme } from "next-themes";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -134,6 +136,19 @@ const Navbar = () => {
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
 
+  const { theme, setTheme } = useTheme();
+  const [darkMode, setDarkMode] = useState(theme === "dark");
+
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    setTheme(darkMode ? "dark" : "light");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [darkMode]);
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
@@ -164,13 +179,19 @@ const Navbar = () => {
   return (
     <nav
       className={cn(
-        "w-full flex items-center justify-between md:justify-around px-6 py-4 border-b bg-white transition-transform duration-300 sticky top-0 z-50",
+        "w-full flex items-center justify-between md:justify-around px-6 py-4 border-b bg-white text-gray-900 dark:bg-gray-900 dark:text-white transition-transform duration-300 sticky top-0 z-50",
         { "-translate-y-full": !isVisible }
       )}
     >
       {/* Logo */}
       <Link href="/" className="flex items-center">
-        <Image src={logo} alt="binly logo" height={48} width={48} />
+        <Image
+          src={logo}
+          alt="binly logo"
+          height={40}
+          width={40}
+          className="rounded-md p-1 shadow-md mr-2"
+        />
         <div className="text-2xl font-bold text-sky-600">Binly</div>
       </Link>
       {/* Nav Menu */}
@@ -178,7 +199,9 @@ const Navbar = () => {
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Features</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="dark:bg-gray-900">
+                Features
+              </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                   {components.map(({ title, href, description, icon }) => (
@@ -186,7 +209,7 @@ const Navbar = () => {
                       key={title}
                       title={title}
                       href={href}
-                      className="bg-gray-50 border border-gray-100 hover:bg-sky-50 transition"
+                      className="bg-gray-50 dark:bg-gray-900 dark:border-gray-800 border border-gray-100 hover:bg-sky-50 dark:hover:bg-sky-900 transition"
                       icon={icon}
                     >
                       {description}
@@ -196,7 +219,9 @@ const Navbar = () => {
               </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>
-              <NavigationMenuTrigger>Industries</NavigationMenuTrigger>
+              <NavigationMenuTrigger className="dark:bg-gray-900">
+                Industries
+              </NavigationMenuTrigger>
               <NavigationMenuContent>
                 <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
                   {industries.map(({ title, href, description, icon }) => (
@@ -204,7 +229,7 @@ const Navbar = () => {
                       key={title}
                       title={title}
                       href={href}
-                      className="bg-gray-50 border border-gray-100 hover:bg-sky-50 transition"
+                      className="bg-gray-50 dark:bg-gray-900 dark:border-gray-800 border border-gray-100 hover:bg-sky-50 dark:hover:bg-sky-900/90 transition"
                       icon={icon}
                     >
                       {description}
@@ -235,20 +260,20 @@ const Navbar = () => {
         </button>
         <a
           href="/login"
-          className="ml-4 text-sm font-medium text-gray-700 hover:underline md:hidden"
+          className="ml-4 text-sm font-medium text-gray-700 dark:text-gray-200 hover:underline md:hidden"
         ></a>
 
         {mobileMenuOpen && (
           <div
             ref={menuRef}
-            className="absolute top-full right-2 mt-3 w-64 rounded-xl border border-gray-200 bg-white shadow-lg transition-all duration-200 ease-in-out md:hidden z-50"
+            className="absolute top-full right-2 mt-3 w-64 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg transition-all duration-200 ease-in-out md:hidden z-50"
           >
             <ul className="flex flex-col gap-3 px-4 py-6">
               <li>
                 <Link
                   href="#features"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-50 transition"
+                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
                 >
                   Features
                 </Link>
@@ -257,7 +282,7 @@ const Navbar = () => {
                 <Link
                   href="/#pricing"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-50 transition"
+                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
                 >
                   Pricing
                 </Link>
@@ -266,7 +291,7 @@ const Navbar = () => {
                 <Link
                   href="/#contact"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-50 transition"
+                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
                 >
                   Contact
                 </Link>
@@ -275,7 +300,7 @@ const Navbar = () => {
                 <Link
                   href="/about"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-50 transition"
+                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
                 >
                   About
                 </Link>
@@ -284,7 +309,7 @@ const Navbar = () => {
                 <Link
                   href="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:bg-sky-50 transition"
+                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
                 >
                   <Button variant="outline" className="w-full">
                     Login
@@ -298,6 +323,16 @@ const Navbar = () => {
 
       {/* Right Buttons */}
       <div className="hidden md:flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          {mounted && (
+            <Switch
+              checked={darkMode}
+              onCheckedChange={(checked) => setDarkMode(checked)}
+              aria-label="Toggle dark mode"
+              className="cursor-pointer"
+            />
+          )}
+        </div>
         <a href="/login" className="text-sm font-medium hover:underline">
           Login
         </a>
@@ -329,7 +364,7 @@ const ListItem = React.forwardRef<
           )}
           {...props}
         >
-          <div className="flex items-center gap-2 text-sm font-medium leading-none">
+          <div className="flex items-center gap-2 text-sm font-medium leading-none text-gray-800 dark:text-white">
             {Icon && <Icon className="h-4 w-4 text-sky-600" />}
             {title}
           </div>

@@ -7,7 +7,7 @@ const plans = [
     description:
       "Track your tools or supplies in one garage, shop, or storage room — free forever.",
     features: [
-      "100 Items",
+      "150 Items",
       "1 Workspace",
       "Add 1 Member",
       "Basic Tagging & Search",
@@ -23,9 +23,9 @@ const plans = [
     description:
       "Ideal for personal projects, small teams, or solo business owners tracking inventory across a couple of spaces.",
     features: [
-      "500 Items",
+      "2,000 Items",
       "2 Workspaces",
-      "Add up to 3 Members",
+      "Add up to 2 Members",
       "Import from CSV",
       "Export from CSV",
       "QR Code Scanning",
@@ -74,12 +74,12 @@ const plans = [
 
 const PricingPlans = () => {
   return (
-    <section id="pricing" className="py-12 bg-gray-50 px-4">
+    <section id="pricing" className="py-12 bg-gray-50 dark:bg-gray-900 px-4">
       <div className="max-w-6xl mx-auto text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
           Pricing Plans
         </h2>
-        <p className="text-gray-700">
+        <p className="text-gray-700 dark:text-gray-300">
           Always free to start. Upgrade only when you`&apos;re ready.
         </p>
       </div>
@@ -89,8 +89,8 @@ const PricingPlans = () => {
             key={plan.name}
             className={`relative cursor-pointer border rounded-2xl p-6 flex flex-col transition-shadow ${
               plan.highlight
-                ? "border-sky-500 shadow-lg bg-sky-50"
-                : "border-gray-200 shadow-sm bg-white"
+                ? "border-sky-500 shadow-lg bg-sky-50 dark:bg-gray-800"
+                : "border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800"
             }`}
           >
             {plan.highlight && (
@@ -98,14 +98,16 @@ const PricingPlans = () => {
                 Most Popular
               </div>
             )}
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
               {plan.name}
             </h3>
-            <p className="text-4xl font-bold text-gray-900 mb-2">
+            <p className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
               {plan.price}
             </p>
-            <p className="text-gray-600 mb-4">{plan.description}</p>
-            <ul className="text-left text-sm text-gray-700 space-y-2 mb-6">
+            <p className="text-gray-600 dark:text-gray-300 mb-4">
+              {plan.description}
+            </p>
+            <ul className="text-left text-sm text-gray-700 dark:text-gray-300 space-y-2 mb-6">
               {plan.features.map((feature) => (
                 <li key={feature}>✔️ {feature}</li>
               ))}
@@ -115,7 +117,7 @@ const PricingPlans = () => {
               className={`mt-auto inline-block text-center px-4 py-2 rounded-md font-medium ${
                 plan.highlight
                   ? "bg-sky-600 text-white hover:bg-sky-700"
-                  : "border border-gray-300 text-gray-700 hover:bg-gray-100"
+                  : "border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
               }`}
             >
               {plan.buttonText}
