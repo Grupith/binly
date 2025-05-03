@@ -7,12 +7,9 @@ import { Badge } from "@/components/ui/badge";
 
 const HowItWorksSection = () => {
   return (
-    <section
-      id="how-it-works"
-      className="px-6 py-12 max-w-full dark:bg-gray-900"
-    >
-      <div className="text-center mb-12 py-8">
-        <h1 className="text-3xl md:text-5xl font-semibold text-gray-900 dark:text-white mb-4">
+    <section id="features" className="px-6 py-12 max-w-full dark:bg-gray-900">
+      <div className="text-center mb-12 py-4">
+        <h1 className="text-4xl md:text-5xl font-semibold text-gray-900 dark:text-white mb-4">
           Features
         </h1>
         <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-8">

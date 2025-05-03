@@ -131,6 +131,8 @@ const industries = [
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [showIndustriesDropdown, setShowIndustriesDropdown] = useState(false);
+  const [showFeaturesDropdown, setShowFeaturesDropdown] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
   const [isVisible, setIsVisible] = useState(true);
@@ -270,13 +272,62 @@ const Navbar = () => {
           >
             <ul className="flex flex-col gap-3 px-4 py-6">
               <li>
-                <Link
-                  href="#features"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
+                <button
+                  onClick={() => setShowFeaturesDropdown(!showFeaturesDropdown)}
+                  className="flex justify-between items-center w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
                 >
                   Features
-                </Link>
+                  <span>{showFeaturesDropdown ? "▲" : "▼"}</span>
+                </button>
+
+                {showFeaturesDropdown && (
+                  <ul className="ml-4 mt-2 space-y-2">
+                    {components.map(({ title, href }) => (
+                      <li key={title}>
+                        <Link
+                          href={href}
+                          onClick={() => {
+                            setMobileMenuOpen(false);
+                            setShowFeaturesDropdown(false);
+                          }}
+                          className="block w-full text-left px-3 py-1 text-sm text-gray-600 dark:text-gray-300 hover:underline"
+                        >
+                          {title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </li>
+              <li>
+                <button
+                  onClick={() =>
+                    setShowIndustriesDropdown(!showIndustriesDropdown)
+                  }
+                  className="flex justify-between items-center w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
+                >
+                  Industries
+                  <span>{showIndustriesDropdown ? "▲" : "▼"}</span>
+                </button>
+
+                {showIndustriesDropdown && (
+                  <ul className="ml-4 mt-2 space-y-2">
+                    {industries.map(({ title, href }) => (
+                      <li key={title}>
+                        <Link
+                          href={href}
+                          onClick={() => {
+                            setMobileMenuOpen(false);
+                            setShowIndustriesDropdown(false);
+                          }}
+                          className="block w-full text-left px-3 py-1 text-sm text-gray-600 dark:text-gray-300 hover:underline"
+                        >
+                          {title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
               <li>
                 <Link
