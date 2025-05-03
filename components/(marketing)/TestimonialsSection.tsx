@@ -8,7 +8,7 @@ const testimonials = [
     role: "Contractor",
   },
   {
-    quote: "It’s the first app my dad could figure out without help.",
+    quote: "It's the first app my dad could figure out without help.",
     name: "Sam",
     role: "Electrician",
   },
