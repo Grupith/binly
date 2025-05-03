@@ -11,7 +11,7 @@ const Retail = () => {
     <>
       <Navbar />
       <main className="bg-white text-gray-800">
-        <section className="py-20 px-6 bg-sky-50">
+        <section className="py-20 px-6 bg-rose-50">
           <div className="max-w-5xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold mb-4">
               Retail Inventory Simplified
@@ -23,7 +23,7 @@ const Retail = () => {
             <div className="mt-8">
               <Link
                 href="/"
-                className="inline-block bg-sky-600 text-white font-medium px-6 py-3 rounded-md hover:bg-sky-700 transition"
+                className="inline-block bg-rose-600 text-white font-medium px-6 py-3 rounded-md hover:bg-rose-700 transition"
               >
                 Try Binly Free
               </Link>
@@ -61,7 +61,7 @@ const Retail = () => {
           </div>
         </section>
 
-        <section className="bg-sky-100 py-20 px-6">
+        <section className="bg-rose-100 py-20 px-6">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-4">
               Keep Your Retail Team Organized
@@ -81,7 +81,7 @@ const Retail = () => {
           </p>
           <Link
             href="/"
-            className="inline-block bg-sky-600 text-white font-medium px-6 py-3 rounded-md hover:bg-sky-700 transition"
+            className="inline-block bg-rose-600 text-white font-medium px-6 py-3 rounded-md hover:bg-rose-700 transition"
           >
             Start Free Today
           </Link>

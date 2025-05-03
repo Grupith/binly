@@ -13,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { Factory, Menu, Stethoscope } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import logo from "@/public/images/logo.png";
 import {
   Boxes,
   Building2,
@@ -27,6 +28,7 @@ import {
   History,
   Users,
 } from "lucide-react";
+import Image from "next/image";
 
 const components = [
   {
@@ -168,6 +170,7 @@ const Navbar = () => {
     >
       {/* Logo */}
       <Link href="/" className="flex items-center">
+        <Image src={logo} alt="binly logo" height={48} width={48} />
         <div className="text-2xl font-bold text-sky-600">Binly</div>
       </Link>
       {/* Nav Menu */}
@@ -300,7 +303,7 @@ const Navbar = () => {
         </a>
         <a
           href="/get-started"
-          className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/90"
+          className="rounded-md px-4 py-2 text-sm font-medium bg-sky-600 hover:bg-sky-600/90 text-white transition-colors shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
         >
           Get Started
         </a>

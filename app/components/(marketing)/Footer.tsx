@@ -68,6 +68,21 @@ const Footer = () => {
           </ul>
         </div>
         <div>
+          <h3 className="font-medium text-gray-900 mb-2">Social</h3>
+          <ul className="space-y-1">
+            <li>
+              <Link
+                href="https://x.com/BinlyInventory"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline"
+              >
+                X (Twitter)
+              </Link>
+            </li>
+          </ul>
+        </div>
+        <div>
           <h3 className="font-medium text-gray-900 mb-2">Industries</h3>
           <ul className="space-y-1">
             <li>
