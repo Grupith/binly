@@ -39,7 +39,7 @@ export default function RootLayout({
         <meta name="twitter:card" content="summary_large_image" />
       </head>
       <body
-        className={`${poppins.variable} antialiased overflow-x-hidden max-w-screen scroll-smooth`}
+        className={`${poppins.variable} antialiased overflow-x-hidden max-w-screen scroll-smooth dark:bg-gray-900`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}

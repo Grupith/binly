@@ -136,6 +136,18 @@ const Footer = () => {
       <div className="mt-10 text-center text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-700 pt-6">
         © {new Date().getFullYear()} Binly. All rights reserved.
       </div>
+      <div className="mt-4 text-center text-gray-500 dark:text-gray-400">
+        Proudly built in{" "}
+        <a
+          href="https://www.wisconsin.gov"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hover:underline text-blue-600 dark:text-blue-400"
+        >
+          Wisconsin
+        </a>
+        .
+      </div>
     </footer>
   );
 };

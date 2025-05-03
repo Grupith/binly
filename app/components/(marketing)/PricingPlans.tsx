@@ -10,6 +10,7 @@ const plans = [
       "150 Items",
       "1 Workspace",
       "Add 1 Member",
+      "Qr Code Scanning",
       "Basic Tagging & Search",
       "1 Photo per Item",
       "No CSV export",
@@ -25,12 +26,13 @@ const plans = [
     features: [
       "2,000 Items",
       "2 Workspaces",
-      "Add up to 2 Members",
+      "Add up to 3 Members",
       "Import from CSV",
       "Export from CSV",
-      "QR Code Scanning",
+      "Barcode Scanning",
       "Up to 3 Photos per Item (5MB max)",
       "Simple user roles (Owner/Viewer)",
+      "Basic Check In/Out",
     ],
     buttonText: "Upgrade to Pro",
     highlight: true,
@@ -66,6 +68,8 @@ const plans = [
       "Unlimited Users",
       "Dedicated Onboarding & Setup Support",
       "Custom Features or Integrations",
+      "Advanced Reporting",
+      "Priority Support",
     ],
     buttonText: "Contact Sales",
     highlight: false,
@@ -108,8 +112,11 @@ const PricingPlans = () => {
               {plan.description}
             </p>
             <ul className="text-left text-sm text-gray-700 dark:text-gray-300 space-y-2 mb-6">
-              {plan.features.map((feature) => (
-                <li key={feature}>✔️ {feature}</li>
+              {plan.features.map((feature, index) => (
+                <li key={feature} className={index < 3 ? "font-semibold" : ""}>
+                  {" "}
+                  ✔️ {feature}
+                </li>
               ))}
             </ul>
             <a
