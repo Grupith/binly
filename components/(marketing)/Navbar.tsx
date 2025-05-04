@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 import { Factory, Menu, Stethoscope } from "lucide-react";
 import { Button } from "../ui/button";
 import Link from "next/link";
-import logo from "@/public/images/logo.png";
+import logo from "@/public/images/BinlyLogoLarge.png";
 import {
   Boxes,
   Building2,
@@ -35,55 +35,55 @@ import Image from "next/image";
 const components = [
   {
     title: "Organizing",
-    href: "#feature-organizing",
+    href: "/#feature-organizing",
     description: "Easily upload and organize your inventory by space or job.",
     icon: Boxes,
   },
   {
     title: "Smart Locations",
-    href: "#feature-locations",
+    href: "/#feature-locations",
     description: "Assign items to shelves, bins, or trucks for easy access.",
     icon: Warehouse,
   },
   {
     title: "Check In & Out",
-    href: "#feature-checkin",
+    href: "/#feature-checkin",
     description: "Track usage and returns with due dates and logs.",
     icon: CheckCircle,
   },
   {
     title: "Barcode Scanning",
-    href: "#feature-barcodes",
+    href: "/#feature-barcodes",
     description: "Scan items with QR or barcode labels for quick access.",
     icon: QrCode,
   },
   {
     title: "CSV Import",
-    href: "#feature-bulk-entry",
+    href: "/#feature-bulk-entry",
     description: "Bulk upload your inventory from spreadsheets in seconds.",
     icon: FileSpreadsheet,
   },
   {
     title: "Smart Alerts",
-    href: "#feature-alerts",
+    href: "/#feature-alerts",
     description: "Get notified about overdue items or low stock.",
     icon: BellRing,
   },
   {
     title: "Pick Lists",
-    href: "#feature-picklists",
+    href: "/#feature-picklists",
     description: "Build and reuse material kits for jobs or repeat tasks.",
     icon: ListTodo,
   },
   {
     title: "Usage Logs",
-    href: "#feature-logs",
+    href: "/#feature-logs",
     description: "View item history by user, status, and job.",
     icon: History,
   },
   {
     title: "Role-Based Access",
-    href: "#feature-access",
+    href: "/#feature-access",
     description: "Assign permissions by team role or workspace.",
     icon: Users,
   },
@@ -196,8 +196,9 @@ const Navbar = () => {
         <Image
           src={logo}
           alt="binly logo"
-          height={36}
-          width={36}
+          aria-label="Binly Logo"
+          height={24}
+          width={24}
           className="rounded-md mr-2"
         />
         <div className="text-2xl font-bold text-sky-600">Binly</div>
