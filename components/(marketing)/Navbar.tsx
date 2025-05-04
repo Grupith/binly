@@ -207,6 +207,15 @@ const Navbar = () => {
         <NavigationMenu>
           <NavigationMenuList>
             <NavigationMenuItem>
+              <NavigationMenuLink
+                href="/about"
+                className="px-4 py-2"
+                aria-label="About"
+              >
+                About
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
               <NavigationMenuTrigger
                 className="dark:bg-gray-900"
                 aria-label="Features"
@@ -279,6 +288,15 @@ const Navbar = () => {
             </NavigationMenuItem>
             <NavigationMenuItem>
               <NavigationMenuLink
+                href="/blog"
+                className="px-4 py-2"
+                aria-label="Blog"
+              >
+                Blog
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink
                 href="/#contact"
                 className="px-4 py-2"
                 aria-label="Contact"
@@ -318,6 +336,16 @@ const Navbar = () => {
             className="absolute top-full right-2 mt-3 w-64 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 shadow-lg transition-all duration-200 ease-in-out md:hidden z-50"
           >
             <ul className="flex flex-col gap-3 px-4 py-6">
+              <li>
+                <Link
+                  href="/about"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
+                  aria-label="About"
+                >
+                  About
+                </Link>
+              </li>
               <li>
                 <button
                   onClick={() => setShowFeaturesDropdown(!showFeaturesDropdown)}
@@ -392,6 +420,7 @@ const Navbar = () => {
                   </ul>
                 )}
               </li>
+
               <li>
                 <Link
                   href="/#pricing"
@@ -404,6 +433,16 @@ const Navbar = () => {
               </li>
               <li>
                 <Link
+                  href="/blog"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
+                  aria-label="Blog"
+                >
+                  Blog
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/#contact"
                   onClick={() => setMobileMenuOpen(false)}
                   className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
@@ -412,16 +451,7 @@ const Navbar = () => {
                   Contact
                 </Link>
               </li>
-              <li>
-                <Link
-                  href="/about"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-sky-50 dark:hover:bg-gray-700 transition"
-                  aria-label="About"
-                >
-                  About
-                </Link>
-              </li>
+
               <li>
                 <Link
                   href="/login"

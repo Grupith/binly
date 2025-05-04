@@ -3,10 +3,37 @@
 import React from "react";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import Image from "next/image";
+import BoxesOnCart from "@/public/images/Checking-boxes-cuate.svg";
+import PersonWithBoxes from "@/public/images/Checking-boxes-bro.svg";
+import CheckingBoxesBro from "@/public/images/Boxes-on-cart.svg";
 
 const HeroSection = () => {
   return (
     <section className="flex flex-col items-center justify-center py-24 bg-white dark:bg-gray-900 text-center px-4">
+      <div className="flex gap-4 mb-8 ">
+        <Image
+          src={PersonWithBoxes}
+          alt="3d icon boxes on a cart"
+          width={150}
+          height={150}
+          className="mx-auto mb-6"
+        />
+        <Image
+          src={BoxesOnCart}
+          alt="3d icon with a person stacking boxes"
+          width={150}
+          height={150}
+          className="mx-auto mb-6"
+        />
+        <Image
+          src={CheckingBoxesBro}
+          alt="3d icon with a person checking boxes"
+          width={150}
+          height={150}
+          className="mx-auto mb-6"
+        />
+      </div>
       <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
         Simple
         <span className="text-sky-600"> Inventory Management</span>
