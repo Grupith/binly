@@ -11,27 +11,21 @@ import CheckingBoxesBro from "@/public/images/Boxes-on-cart.svg";
 const HeroSection = () => {
   return (
     <section className="flex flex-col items-center justify-center py-24 bg-white dark:bg-gray-900 text-center px-4">
-      <div className="flex gap-4 mb-8 ">
+      <div className="flex flex-wrap justify-center gap-4 mb-8 max-w-full overflow-hidden">
         <Image
           src={PersonWithBoxes}
           alt="3d icon boxes on a cart"
-          width={150}
-          height={150}
-          className="mx-auto mb-6"
+          className="w-24 sm:w-36 mx-auto mb-6"
         />
         <Image
           src={BoxesOnCart}
           alt="3d icon with a person stacking boxes"
-          width={150}
-          height={150}
-          className="mx-auto mb-6"
+          className="w-24 sm:w-36 mx-auto mb-6"
         />
         <Image
           src={CheckingBoxesBro}
           alt="3d icon with a person checking boxes"
-          width={150}
-          height={150}
-          className="mx-auto mb-6"
+          className="w-24 sm:w-36 mx-auto mb-6"
         />
       </div>
       <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
