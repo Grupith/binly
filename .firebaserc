@@ -1,5 +1,15 @@
 {
   "projects": {
     "default": "binly-84d7a"
-  }
+  },
+  "targets": {
+    "binly-84d7a": {
+      "hosting": {
+        "apphosting": [
+          "binly-84d7a"
+        ]
+      }
+    }
+  },
+  "etags": {}
 }
