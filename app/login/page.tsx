@@ -8,9 +8,21 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import SignInButton from "@/components/(marketing)/SignInButton";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
+import { useEffect } from "react";
 
 const Login = () => {
+  const { user } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user) {
+      router.push("/dashboard");
+    }
+  }, [user, router]);
+
   return (
     <>
       <div className="flex h-screen items-center justify-center bg-gradient-to-br from-blue-50 to-slate-100 dark:from-slate-900 dark:to-slate-950 px-4">
@@ -24,9 +36,7 @@ const Login = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Button className="w-full" variant="outline">
-              Sign in with Google
-            </Button>
+            <SignInButton />
           </CardContent>
           <CardFooter className="text-xs text-muted-foreground justify-center dark:text-gray-500">
             By continuing, you agree to our Terms and Privacy Policy.

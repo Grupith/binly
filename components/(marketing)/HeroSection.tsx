@@ -43,7 +43,7 @@ const HeroSection = () => {
           <Link href="/get-started">Get Started</Link>
         </Button>
         <Button variant="outline" className="shadow-sm hover:shadow-lg">
-          <Link href="#how-it-works">See How It Works</Link>
+          <Link href="#features">See How It Works</Link>
         </Button>
       </div>
 

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -42,7 +43,7 @@ export default function RootLayout({
         className={`${poppins.variable} antialiased overflow-x-hidden max-w-screen scroll-smooth dark:bg-gray-900`}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          {children}
+          <AuthProvider>{children}</AuthProvider>
         </ThemeProvider>
       </body>
     </html>
