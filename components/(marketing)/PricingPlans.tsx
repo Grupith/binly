@@ -77,6 +77,23 @@ const plans = [
 ];
 
 const PricingPlans = () => {
+  const formatPrice = (price: string) => {
+    if (price === "Custom")
+      return <span className="text-4xl font-bold">Custom</span>;
+
+    const [amount, suffix] = price.split("/");
+    return (
+      <span className="inline-flex items-baseline gap-1">
+        <span className="text-5xl font-bold text-gray-900 dark:text-white">
+          {amount}
+        </span>
+        <span className="text-sm text-gray-500 dark:text-gray-400">
+          /{suffix}
+        </span>
+      </span>
+    );
+  };
+
   return (
     <section id="pricing" className="py-12 bg-gray-50 dark:bg-gray-900 px-4">
       <div className="max-w-6xl mx-auto text-center mb-12">
@@ -106,7 +123,7 @@ const PricingPlans = () => {
               {plan.name}
             </h3>
             <p className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-              {plan.price}
+              {formatPrice(plan.price)}
             </p>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               {plan.description}
