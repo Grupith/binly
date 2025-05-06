@@ -40,7 +40,7 @@ const HeroSection = () => {
       </p>
       <div className="flex gap-4 flex-wrap justify-center">
         <Button variant="default" className="shadow-sm hover:shadow-lg">
-          <Link href="/get-started">Get Started</Link>
+          <Link href="/login">Get Started</Link>
         </Button>
         <Button variant="outline" className="shadow-sm hover:shadow-lg">
           <Link href="#features">See How It Works</Link>

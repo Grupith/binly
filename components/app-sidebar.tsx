@@ -2,10 +2,8 @@
 
 import * as React from "react";
 import {
-  AudioWaveform,
   BookOpen,
   Bot,
-  Command,
   Frame,
   GalleryVerticalEnd,
   MapIcon,
@@ -26,7 +24,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/AuthContext";
-// This is sample data.
+
 const data = {
   user: {
     name: "shadcn",
@@ -37,17 +35,7 @@ const data = {
     {
       name: "Storage Unit",
       logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Shop Storage",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Basement Storage",
-      logo: Command,
-      plan: "Free",
+      plan: "Free Plan",
     },
   ],
   navMain: [

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 const plans = [
@@ -136,8 +137,8 @@ const PricingPlans = () => {
                 </li>
               ))}
             </ul>
-            <a
-              href="/get-started"
+            <Link
+              href="/login"
               className={`mt-auto inline-block text-center px-4 py-2 rounded-md font-medium ${
                 plan.highlight
                   ? "bg-sky-600 text-white hover:bg-sky-700"
@@ -145,7 +146,7 @@ const PricingPlans = () => {
               }`}
             >
               {plan.buttonText}
-            </a>
+            </Link>
           </div>
         ))}
       </div>

@@ -482,20 +482,14 @@ const Navbar = () => {
             />
           )}
         </div>
-        <a
-          href="/login"
-          className="text-sm font-medium hover:underline"
-          aria-label="Login"
-        >
-          Login
-        </a>
-        <a
-          href="/get-started"
-          className="rounded-md px-4 py-2 text-sm font-medium bg-sky-600 hover:bg-sky-600/90 text-white transition-colors shadow-md hover:shadow-lg focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2"
-          aria-label="Get Started"
-        >
-          Get Started
-        </a>
+        <Link href="/login">
+          <Button
+            variant="default"
+            className="text-sm font-medium cursor-pointer"
+          >
+            Start now{" "}
+          </Button>
+        </Link>
       </div>
     </nav>
   );

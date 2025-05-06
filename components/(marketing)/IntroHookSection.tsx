@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import React from "react";
+import { Button } from "../ui/button";
 
 const features = [
   {
@@ -64,11 +65,13 @@ const IntroHookSection = () => {
         ))}
       </div>
       <div className="max-w-2xl mx-auto pt-20 pb-10">
-        <Link
-          href="/get-started"
-          className="inline-block bg-sky-200 dark:bg-sky-700 text-gray-900 dark:text-white font-semibold px-6 py-3 rounded-md shadow hover:bg-sky-300 dark:hover:bg-sky-600 transition-colors"
-        >
-          Start Free Today
+        <Link href="/login">
+          <Button
+            variant="default"
+            className="shadow-sm hover:shadow-lg cursor-pointer"
+          >
+            Try it Free, No Credit Card Required
+          </Button>
         </Link>
       </div>
     </section>
