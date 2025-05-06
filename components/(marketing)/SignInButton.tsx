@@ -10,6 +10,7 @@ export default function SignInButton() {
   const router = useRouter();
   const handleSignIn = async () => {
     try {
+      if (!auth) return;
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
       console.log("Signed in:", user.displayName);
