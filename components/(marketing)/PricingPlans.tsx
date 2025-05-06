@@ -24,7 +24,7 @@ const plans = [
     description:
       "Ideal for personal projects, small teams, or solo business owners tracking inventory across a couple of spaces.",
     features: [
-      "2,000 Items",
+      "1,500 Items",
       "2 Workspaces",
       "Add up to 3 Members",
       "Import from CSV",
