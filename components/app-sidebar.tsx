@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useEffect, useState } from "react";
 import {
   BookOpen,
   Bot,
@@ -10,6 +11,9 @@ import {
   PieChartIcon,
   Settings2,
   SquareTerminal,
+  Building2,
+  Home,
+  Wrench,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -24,6 +28,9 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { useAuth } from "@/contexts/AuthContext";
+import { getUserWorkspaces } from "@/lib/firebase/workspaces";
+import { getDoc, doc } from "firebase/firestore";
+import { db } from "@/app/firebase";
 
 const data = {
   user: {
@@ -83,10 +90,60 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuth();
+  const [workspaces, setWorkspaces] = useState<
+    { id: string; name: string; logo: React.ElementType; plan: string }[]
+  >([]);
+  const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string | null>(
+    null
+  );
+
+  useEffect(() => {
+    const fetchWorkspaces = async () => {
+      if (!user) return;
+
+      const iconMap: Record<string, React.ElementType> = {
+        Building2,
+        Home,
+        Wrench,
+      };
+
+      const workspaceData = await getUserWorkspaces(user.uid);
+      const formatted = workspaceData.map(
+        (ws: { id: string; name?: string; logo?: string }) => ({
+          id: ws.id,
+          name: ws.name ?? "Untitled Workspace",
+          logo: iconMap[ws.logo ?? ""] || GalleryVerticalEnd,
+          plan: "Free Plan",
+        })
+      );
+      setWorkspaces(formatted);
+
+      // Fetch current workspace ID from user doc
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        setCurrentWorkspaceId(userSnap.data().workspaces || null);
+      }
+    };
+
+    fetchWorkspaces();
+  }, [user]);
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.workspaces} />
+        {workspaces.length === 0 ? (
+          <div className="p-2 text-muted-foreground text-sm">
+            Loading workspace...
+          </div>
+        ) : (
+          currentWorkspaceId && (
+            <TeamSwitcher
+              teams={workspaces}
+              initialWorkspaceId={currentWorkspaceId}
+            />
+          )
+        )}
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

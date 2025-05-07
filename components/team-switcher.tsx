@@ -21,15 +21,25 @@ import {
 
 export function TeamSwitcher({
   teams,
+  initialWorkspaceId,
 }: {
   teams: {
     name: string;
     logo: React.ElementType;
     plan: string;
+    id: string;
   }[];
+  initialWorkspaceId?: string;
 }) {
   const { isMobile } = useSidebar();
-  const [activeTeam, setActiveTeam] = React.useState(teams[0]);
+  const [activeTeam, setActiveTeam] = React.useState(() => {
+    if (!teams.length) return null;
+    if (initialWorkspaceId) {
+      const match = teams.find((t) => t.id === initialWorkspaceId);
+      return match || teams[0];
+    }
+    return teams[0];
+  });
 
   if (!activeTeam) {
     return null;
