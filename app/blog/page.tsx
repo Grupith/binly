@@ -4,6 +4,31 @@ import Footer from "../../components/(marketing)/Footer";
 
 const posts = [
   {
+    title: "Development Continues",
+    slug: "development-continues",
+    date: "May 7, 2025",
+    description: "Binly is taking shape — workspaces are now live.",
+    content: (
+      <>
+        <p>
+          We&apos;re making steady progress on the Binly MVP. One of the key
+          updates this week is the addition of workspace logic.
+        </p>
+        <p>
+          You can now create your own workspace, giving structure to your tools,
+          teams, and storage locations. This sets the stage for managing
+          multiple environments — like your garage, shop, or job site — all
+          within one app.
+        </p>
+        <p>
+          It&apos;s a foundational step toward everything else that&apos;s
+          coming. Stay tuned — more inventory features are just around the
+          corner.
+        </p>
+      </>
+    ),
+  },
+  {
     title: "Attention to Detail in UI",
     slug: "attention-to-detail-ui",
     date: "May 3, 2025",
