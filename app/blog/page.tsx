@@ -4,6 +4,36 @@ import Footer from "../../components/(marketing)/Footer";
 
 const posts = [
   {
+    title: "Items Are Just Around the Corner",
+    slug: "items-coming-soon",
+    date: "May 8, 2025",
+    description:
+      "We're finalizing the item system — from tags to bulk input to QR labeling.",
+    content: (
+      <>
+        <p>
+          We&apos;re getting close to launching one of Binly&apos;s most
+          powerful features yet: Items.
+        </p>
+        <p>
+          Right now, we&apos;re refining the core of the item experience —
+          things like tags for smarter organization, QR codes for quick access,
+          and bulk-add support to speed up setup.
+        </p>
+        <p>
+          These features are all about saving time and making it effortless to
+          keep track of what you own, where it is, and who&apos;s using it.
+        </p>
+        <p>
+          Whether you&apos;re managing your tools, parts, or equipment,
+          we&apos;re making sure the item system is fast, flexible, and feels
+          good to use.
+        </p>
+        <p>Stay tuned — the best part of Binly is almost here.</p>
+      </>
+    ),
+  },
+  {
     title: "Development Continues",
     slug: "development-continues",
     date: "May 7, 2025",

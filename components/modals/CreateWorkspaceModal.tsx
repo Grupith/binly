@@ -74,7 +74,10 @@ export function CreateWorkspaceModal({ onClose }: Props) {
             onChange={(e) => setWorkspaceName(e.target.value)}
             disabled={isSubmitting}
           />
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-4 py-6">
+            <p className="text-sm text-muted-foreground">
+              Choose an icon for your workspace
+            </p>
             {[
               { label: "Building", value: "Building2", Icon: Building2 },
               { label: "Home", value: "Home", Icon: Home },
