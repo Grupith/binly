@@ -27,6 +27,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/AuthContext";
 import { getUserWorkspaces } from "@/lib/firebase/workspaces";
 import { getDoc, doc } from "firebase/firestore";
@@ -133,8 +134,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
         {workspaces.length === 0 ? (
-          <div className="p-2 text-muted-foreground text-sm">
-            Loading workspace...
+          <div className="flex items-center space-x-2">
+            <Skeleton className="h-10 w-10 rounded-full" />
+            <div className="space-y-2">
+              <Skeleton className="h-3 w-[165px]" />
+              <Skeleton className="h-3 w-[165px]" />
+            </div>
           </div>
         ) : (
           currentWorkspaceId && (
@@ -151,7 +156,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
 
       <SidebarFooter>
-        {user && (
+        {user ? (
           <NavUser
             user={{
               name: user.displayName || "Unknown",
@@ -159,6 +164,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               avatar: user.photoURL || "/default-avatar.png", // fallback avatar
             }}
           />
+        ) : (
+          <div className="flex items-center space-x-2">
+            <Skeleton className="h-10 w-10 rounded-full" />
+            <div className="space-y-2">
+              <Skeleton className="h-3 w-[165px]" />
+              <Skeleton className="h-3 w-[165px]" />
+            </div>
+          </div>
         )}
       </SidebarFooter>
       <SidebarRail />

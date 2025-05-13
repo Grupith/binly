@@ -7,8 +7,10 @@ import Image from "next/image";
 import BoxesOnCart from "@/public/images/Checking-boxes-cuate.svg";
 import PersonWithBoxes from "@/public/images/Checking-boxes-bro.svg";
 import CheckingBoxesBro from "@/public/images/Boxes-on-cart.svg";
+import { useGoogleSignIn } from "@/hooks/useGoogleSignIn";
 
 const HeroSection = () => {
+  const { signInWithGoogle } = useGoogleSignIn();
   return (
     <section className="flex flex-col items-center justify-center py-24 bg-white dark:bg-gray-900 text-center px-4">
       <div className="flex flex-wrap justify-center gap-4 mb-8 max-w-full overflow-hidden">
@@ -39,8 +41,12 @@ const HeroSection = () => {
         skills needed.
       </p>
       <div className="flex gap-4 flex-wrap justify-center">
-        <Button variant="default" className="shadow-sm hover:shadow-lg">
-          <Link href="/login">Get Started</Link>
+        <Button
+          variant="default"
+          className="shadow-sm hover:shadow-lg"
+          onClick={signInWithGoogle}
+        >
+          Get Started
         </Button>
         <Button variant="outline" className="shadow-sm hover:shadow-lg">
           <Link href="#features">See How It Works</Link>

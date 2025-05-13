@@ -6,6 +6,7 @@ import { checkUserExists, createUserIfNotExists } from "@/lib/firebase/users";
 import { getUserWorkspaces } from "@/lib/firebase/workspaces";
 import { CreateWorkspaceModal } from "@/components/modals/CreateWorkspaceModal";
 import type { Workspace } from "@/lib/firebase/workspaces";
+import { SkeletonCard } from "@/components/SkeletonCard";
 
 export default function Page() {
   const { user } = useAuth();
@@ -41,7 +42,12 @@ export default function Page() {
   }, [user]);
 
   if (loading) {
-    return <div className="p-4">Loading dashboard...</div>;
+    return (
+      <div className="p-4 flex flex-col space-y-4">
+        <SkeletonCard />
+        <SkeletonCard />
+      </div>
+    );
   }
 
   return (

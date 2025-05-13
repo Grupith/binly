@@ -26,13 +26,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html
-      lang="en"
-      suppressHydrationWarning
-      className="bg-white dark:bg-gray-900"
-    >
+    <html lang="en" suppressHydrationWarning>
       <head>
-        <link rel="icon" href="/images/logo.png" />
+        <link rel="icon" href="/icons/icon-192x192.png" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="application-name" content="Binly Inventory" />
+        <meta name="apple-mobile-web-app-title" content="Binly Inventory" />
+
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#ffffff" />
         <meta property="og:title" content="Binly Inventory" />

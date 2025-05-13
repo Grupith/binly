@@ -31,6 +31,9 @@ import {
   Users,
 } from "lucide-react";
 import Image from "next/image";
+import { auth, provider } from "@/app/firebase";
+import { signInWithPopup } from "firebase/auth";
+import { useRouter } from "next/navigation";
 
 const components = [
   {
@@ -134,6 +137,7 @@ const Navbar = () => {
   const [showIndustriesDropdown, setShowIndustriesDropdown] = useState(false);
   const [showFeaturesDropdown, setShowFeaturesDropdown] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const [isVisible, setIsVisible] = useState(true);
   const lastScrollY = useRef(0);
@@ -182,6 +186,20 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  // Function to handle Google login popup for quick access
+  const handleGoogleLoginPopup = async () => {
+    try {
+      if (!auth) return;
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      console.log("Signed in:", user.displayName);
+      router.push("/dashboard"); // Redirect to the dashboard after sign-in
+      // You can now store user info in Firestore or context
+    } catch (error) {
+      console.error("Error signing in with Google", error);
+    }
+  };
 
   return (
     <nav
@@ -482,12 +500,19 @@ const Navbar = () => {
             />
           )}
         </div>
+        <Button
+          variant="outline"
+          className="text-sm font-medium cursor-pointer"
+          onClick={handleGoogleLoginPopup}
+        >
+          Login
+        </Button>
         <Link href="/login">
           <Button
             variant="default"
             className="text-sm font-medium cursor-pointer"
           >
-            Start now{" "}
+            Get Started{" "}
           </Button>
         </Link>
       </div>
