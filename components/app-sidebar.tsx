@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useEffect, useState } from "react";
+
 import {
   BookOpen,
   Bot,
@@ -11,10 +11,9 @@ import {
   PieChartIcon,
   Settings2,
   SquareTerminal,
-  Building2,
-  Home,
-  Wrench,
 } from "lucide-react";
+
+import { useWorkspace } from "@/contexts/WorkspaceContext";
 
 import { NavMain } from "@/components/nav-main";
 import { NavProjects } from "@/components/nav-projects";
@@ -29,9 +28,6 @@ import {
 } from "@/components/ui/sidebar";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/AuthContext";
-import { getUserWorkspaces } from "@/lib/firebase/workspaces";
-import { getDoc, doc } from "firebase/firestore";
-import { db } from "@/app/firebase";
 
 const data = {
   user: {
@@ -91,63 +87,18 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuth();
-  const [workspaces, setWorkspaces] = useState<
-    { id: string; name: string; logo: React.ElementType; plan: string }[]
-  >([]);
-  const [currentWorkspaceId, setCurrentWorkspaceId] = useState<string | null>(
-    null
-  );
-
-  useEffect(() => {
-    const fetchWorkspaces = async () => {
-      if (!user) return;
-
-      const iconMap: Record<string, React.ElementType> = {
-        Building2,
-        Home,
-        Wrench,
-      };
-
-      const workspaceData = await getUserWorkspaces(user.uid);
-      const formatted = workspaceData.map(
-        (ws: { id: string; name?: string; logo?: string }) => ({
-          id: ws.id,
-          name: ws.name ?? "Untitled Workspace",
-          logo: iconMap[ws.logo ?? ""] || GalleryVerticalEnd,
-          plan: "Free Plan",
-        })
-      );
-      setWorkspaces(formatted);
-
-      // Fetch current workspace ID from user doc
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists()) {
-        setCurrentWorkspaceId(userSnap.data().workspaces || null);
-      }
-    };
-
-    fetchWorkspaces();
-  }, [user]);
+  const { workspaces, currentWorkspaceId } = useWorkspace();
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        {workspaces.length === 0 ? (
-          <div className="flex items-center space-x-2">
-            <Skeleton className="h-10 w-10 rounded-full" />
-            <div className="space-y-2">
-              <Skeleton className="h-3 w-[165px]" />
-              <Skeleton className="h-3 w-[165px]" />
-            </div>
-          </div>
+      <SidebarHeader className="min-h-[30px]">
+        {workspaces.length > 0 && currentWorkspaceId ? (
+          <TeamSwitcher
+            teams={workspaces}
+            initialWorkspaceId={currentWorkspaceId}
+          />
         ) : (
-          currentWorkspaceId && (
-            <TeamSwitcher
-              teams={workspaces}
-              initialWorkspaceId={currentWorkspaceId}
-            />
-          )
+          <div className="flex justify-center">...</div>
         )}
       </SidebarHeader>
       <SidebarContent>

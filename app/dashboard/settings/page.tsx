@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { db } from "@/app/firebase";
 import { useAuth } from "@/contexts/AuthContext";
-import { doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
+import { doc, deleteDoc, updateDoc } from "firebase/firestore";
 import {
   AlertDialog,
   AlertDialogTrigger,
@@ -27,51 +27,43 @@ import {
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Building2, Home, Wrench } from "lucide-react";
+import { useWorkspace } from "@/contexts/WorkspaceContext";
+import LoadingSpinner from "@/components/LoadingSpinner";
 
 type Workspace = {
   id: string;
   name: string;
   createdAt?: { toDate: () => Date };
   members?: string[];
-  icon?: string;
+  icon: string;
+};
+
+type WorkspaceWithMeta = Workspace & {
+  createdAt?: { toDate: () => Date };
+  members?: string[];
 };
 
 const SettingsPage = () => {
   const { user } = useAuth();
-  const [workspace, setWorkspace] = useState<Workspace | null>(null);
-  const [newName, setNewName] = useState("");
-  const [newIcon, setNewIcon] = useState<string | null>(null);
+  const { workspaces, currentWorkspaceId } = useWorkspace();
+  const workspace = workspaces.find(
+    (w) => w.id === currentWorkspaceId
+  ) as WorkspaceWithMeta | null;
+  const [newName, setNewName] = useState(workspace?.name || "");
+  const [newIcon, setNewIcon] = useState<string | null>(
+    workspace?.icon || null
+  );
   const [isUpdating, setIsUpdating] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    const fetchWorkspace = async () => {
-      if (!user) return;
-      const userRef = doc(db, "users", user.uid);
-      const userSnap = await getDoc(userRef);
-      if (!userSnap.exists()) return;
-      const workspaceId = userSnap.data().workspaces;
-      const workspaceRef = doc(db, "workspaces", workspaceId);
-      const workspaceSnap = await getDoc(workspaceRef);
-      if (workspaceSnap.exists()) {
-        const data = workspaceSnap.data() as Omit<Workspace, "id">;
-        setWorkspace({ id: workspaceSnap.id, ...data });
-        setNewName(data.name || "");
-        setNewIcon(data.icon || null);
-      }
-    };
-
-    fetchWorkspace();
-  }, [user]);
-
   if (!workspace) {
-    return <div>Loading workspace settings...</div>;
+    return <LoadingSpinner />;
   }
 
   return (
-    <div className="max-w-xl p-6 bg-white dark:bg-gray-900 rounded-lg shadow space-y-6">
-      <h1 className="text-3xl font-semibold">Workspace Settings</h1>
+    <div className="max-w-xl bg-white dark:bg-gray-900 rounded-lg shadow space-y-4">
+      <h1 className="text-2xl font-semibold">Workspace Settings</h1>
       <div className="space-y-2 text-sm text-muted-foreground">
         <p className="flex items-center gap-2">
           <strong className="text-foreground">Name:</strong> {workspace.name}
@@ -118,6 +110,7 @@ const SettingsPage = () => {
                   variant="secondary"
                   onClick={() => {
                     setNewName(workspace.name || "");
+                    setNewIcon(workspace.icon || null);
                     setOpen(false);
                   }}
                 >
@@ -132,15 +125,6 @@ const SettingsPage = () => {
                         name: newName.trim(),
                         icon: newIcon,
                       });
-                      setWorkspace((prev) =>
-                        prev
-                          ? {
-                              ...prev,
-                              name: newName.trim(),
-                              icon: newIcon || prev.icon,
-                            }
-                          : prev
-                      );
                       setOpen(false);
                       window.location.reload();
                       toast("Workspace name updated", { duration: 3000 });
