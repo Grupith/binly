@@ -4,7 +4,6 @@ import * as React from "react";
 
 import {
   BookOpen,
-  Bot,
   Frame,
   GalleryVerticalEnd,
   MapIcon,
@@ -49,11 +48,7 @@ const data = {
       icon: PieChartIcon,
       isActive: true,
     },
-    {
-      title: "Search",
-      url: "/dashboard/search",
-      icon: Bot,
-    },
+
     {
       title: "Items",
       url: "/dashboard/items",

@@ -1,10 +1,10 @@
 "use client";
 import React from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { WorkspaceProvider } from "@/contexts/WorkspaceContext";
 import BreadcrumbHeader from "@/components/breadcrumb-header";
-import { Suspense } from "react";
 
 export default function DashboardLayout({
   children,
@@ -25,19 +25,26 @@ export default function DashboardLayout({
     localStorage.setItem("sidebar_open", isOpen.toString());
   };
 
+  const [queryClient] = React.useState(() => new QueryClient());
+
   return (
-    <WorkspaceProvider>
-      {hydrated && (
-        <SidebarProvider open={sidebarOpen} onOpenChange={handleSidebarToggle}>
-          <AppSidebar />
-          <SidebarInset>
-            <BreadcrumbHeader />
-            <main className="flex-1 dark:bg-gray-900 dark:text-gray-200 p-4">
-              <Suspense fallback={null}>{children}</Suspense>
-            </main>
-          </SidebarInset>
-        </SidebarProvider>
-      )}
-    </WorkspaceProvider>
+    <QueryClientProvider client={queryClient}>
+      <WorkspaceProvider>
+        {hydrated && (
+          <SidebarProvider
+            open={sidebarOpen}
+            onOpenChange={handleSidebarToggle}
+          >
+            <AppSidebar />
+            <SidebarInset>
+              <BreadcrumbHeader />
+              <main className="flex-1 dark:bg-gray-900 dark:text-gray-200 p-4">
+                {children}
+              </main>
+            </SidebarInset>
+          </SidebarProvider>
+        )}
+      </WorkspaceProvider>
+    </QueryClientProvider>
   );
 }
