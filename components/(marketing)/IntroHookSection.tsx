@@ -39,7 +39,7 @@ const features = [
 
 const IntroHookSection = () => {
   return (
-    <section className="py-24 text-center px-6 bg-sky-50 dark:bg-gray-900">
+    <section className="py-24 text-center px-6 bg-sky-100 dark:bg-gray-900">
       <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
         Organize your gear in minutes, not hours.
       </h2>

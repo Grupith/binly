@@ -53,16 +53,18 @@ const HeroSection = () => {
         </Button>
       </div>
 
-      {/* Demo video */}
+      {/* Demo photo */}
       <section className="w-full bg-white dark:bg-gray-900 flex justify-center pt-20 pb-10 px-4">
-        <div className="w-full max-w-4xl aspect-video shadow-xl">
-          <iframe
-            className="w-full h-full rounded-lg shadow-lg"
-            src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-            title="Binly Demo Video"
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
+        <div className="w-full max-w-4xl relative">
+          <div className="absolute inset-0 bg-black/60 flex items-center justify-center rounded-lg">
+            <p className="text-white text-xl font-bold">Placeholder Image</p>
+          </div>
+          <Image
+            src="/images/dashboardMockup.jpg"
+            alt="Binly Dashboard Mockup"
+            width={1920}
+            height={1080}
+            className="w-full h-full rounded-lg shadow-xl object-cover"
           />
         </div>
       </section>

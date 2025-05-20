@@ -8,12 +8,13 @@ const plans = [
     description:
       "Track your tools or supplies in one garage, shop, or storage room — free forever.",
     features: [
-      "150 Items",
+      "100 Items",
       "1 Workspace",
-      "Add 1 Member",
+      "1 user per workspace",
+      "Smart Search",
+      "Custom Tags",
       "Qr Code Scanning",
-      "Basic Tagging & Search",
-      "1 Photo per Item",
+      "1 Photo per Item (5MB max)",
       "No CSV export",
     ],
     buttonText: "Start Free",
@@ -25,14 +26,14 @@ const plans = [
     description:
       "Ideal for personal projects, small teams, or solo business owners tracking inventory across a couple of spaces.",
     features: [
-      "1,500 Items",
+      "350 Items",
       "2 Workspaces",
-      "Add up to 3 Members",
+      "2 users per workspace",
       "Import from CSV",
       "Export from CSV",
       "Barcode Scanning",
       "Up to 3 Photos per Item (5MB max)",
-      "Simple user roles (Owner/Viewer)",
+      "Simple user roles (View/edit)",
       "Basic Check In/Out",
     ],
     buttonText: "Upgrade to Pro",
@@ -44,9 +45,9 @@ const plans = [
     description:
       "Designed for trades, coffee shops, and small teams — with smart tools to track inventory, reduce mistakes, and save time every day.",
     features: [
-      "10,000 Items",
-      "10 Workspaces",
-      "Add 10 Members",
+      "1,500 Items",
+      "5 Workspaces",
+      "Add 10 users per workspace",
       "Role-based access (Owner, Manager, Staff)",
       "Check In/Out System",
       "Pick Lists",
