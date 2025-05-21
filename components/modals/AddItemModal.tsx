@@ -26,12 +26,8 @@ import {
 } from "@/components/ui/tooltip";
 import { HelpCircle } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  getStorage,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
-} from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import Image from "next/image";
 import { storage } from "@/app/firebase"; // your initialized storage instance
 
 type AddItemModalProps = {
@@ -238,11 +234,14 @@ export default function AddItemModal({
                 </p>
 
                 {imagePreview && (
-                  <img
-                    src={imagePreview}
-                    alt="Preview"
-                    className="mt-2 max-h-40 object-contain rounded"
-                  />
+                  <div className="relative mt-2 w-full h-40 rounded overflow-hidden">
+                    <Image
+                      src={imagePreview}
+                      alt="Preview"
+                      fill
+                      className="object-contain rounded"
+                    />
+                  </div>
                 )}
               </div>
             </div>
