@@ -56,53 +56,61 @@ export default function AddItemModal({
 
   const [imageFile, setImageFile] = React.useState<File | null>(null);
   const [imagePreview, setImagePreview] = React.useState<string | null>(null);
+  const [loading, setLoading] = React.useState(false);
 
   const onSubmit = async (data: ItemFormData) => {
     if (!currentWorkspaceId || !user) return;
 
+    setLoading(true); // ← Start loading
+
     let imageUrl = "";
 
-    if (imageFile) {
-      const storageRef = ref(
-        storage,
-        `workspaces/${currentWorkspaceId}/items/${Date.now()}_${imageFile.name}`
-      );
-      const uploadTask = uploadBytesResumable(storageRef, imageFile);
-      await new Promise((resolve, reject) => {
-        uploadTask.on("state_changed", null, reject, async () => {
-          imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
-          resolve(null);
-        });
-      });
-    }
-
-    const itemData = {
-      ...data,
-      tags: data.tags.split(",").map((tag) => tag.trim().toLowerCase()),
-      status: "available",
-      createdAt: serverTimestamp(),
-      createdBy: user?.uid || "unknown user",
-      lastMovedAt: serverTimestamp(),
-      locations: {},
-      assigned: {},
-      imageUrl, // new field
-    };
-
     try {
+      if (imageFile) {
+        const storageRef = ref(
+          storage,
+          `workspaces/${currentWorkspaceId}/items/${Date.now()}_${
+            imageFile.name
+          }`
+        );
+        const uploadTask = uploadBytesResumable(storageRef, imageFile);
+        await new Promise((resolve, reject) => {
+          uploadTask.on("state_changed", null, reject, async () => {
+            imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+            resolve(null);
+          });
+        });
+      }
+
+      const itemData = {
+        ...data,
+        tags: data.tags.split(",").map((tag) => tag.trim().toLowerCase()),
+        status: "available",
+        createdAt: serverTimestamp(),
+        createdBy: user?.uid || "unknown user",
+        lastMovedAt: serverTimestamp(),
+        locations: {},
+        assigned: {},
+        imageUrl,
+      };
+
       await addDoc(
         collection(db, "workspaces", currentWorkspaceId, "items"),
         itemData
       );
+
       queryClient.invalidateQueries({
         queryKey: ["items", currentWorkspaceId],
       });
-      console.log("Item saved!");
+
       reset();
       setImageFile(null);
       setImagePreview(null);
       onOpenChange(false);
     } catch (error) {
       console.error("Error adding item:", error);
+    } finally {
+      setLoading(false); // ← End loading
     }
   };
 
@@ -239,7 +247,7 @@ export default function AddItemModal({
                       src={imagePreview}
                       alt="Preview"
                       fill
-                      className="object-contain rounded"
+                      className="object-contain rounded-lg"
                     />
                   </div>
                 )}
@@ -250,11 +258,14 @@ export default function AddItemModal({
               <Button
                 type="button"
                 variant="outline"
+                disabled={loading}
                 onClick={() => onOpenChange(false)}
               >
                 Cancel
               </Button>
-              <Button type="submit">Save</Button>
+              <Button type="submit" disabled={loading}>
+                {loading ? "Saving..." : "Save"}
+              </Button>
             </DialogFooter>
           </form>
         </TooltipProvider>
