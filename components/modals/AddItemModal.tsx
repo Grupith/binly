@@ -26,6 +26,13 @@ import {
 } from "@/components/ui/tooltip";
 import { HelpCircle } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import { storage } from "@/app/firebase"; // your initialized storage instance
 
 type AddItemModalProps = {
   open: boolean;
@@ -51,8 +58,27 @@ export default function AddItemModal({
   const { currentWorkspaceId } = useWorkspace();
   const queryClient = useQueryClient();
 
+  const [imageFile, setImageFile] = React.useState<File | null>(null);
+  const [imagePreview, setImagePreview] = React.useState<string | null>(null);
+
   const onSubmit = async (data: ItemFormData) => {
     if (!currentWorkspaceId || !user) return;
+
+    let imageUrl = "";
+
+    if (imageFile) {
+      const storageRef = ref(
+        storage,
+        `workspaces/${currentWorkspaceId}/items/${Date.now()}_${imageFile.name}`
+      );
+      const uploadTask = uploadBytesResumable(storageRef, imageFile);
+      await new Promise((resolve, reject) => {
+        uploadTask.on("state_changed", null, reject, async () => {
+          imageUrl = await getDownloadURL(uploadTask.snapshot.ref);
+          resolve(null);
+        });
+      });
+    }
 
     const itemData = {
       ...data,
@@ -63,6 +89,7 @@ export default function AddItemModal({
       lastMovedAt: serverTimestamp(),
       locations: {},
       assigned: {},
+      imageUrl, // new field
     };
 
     try {
@@ -75,6 +102,8 @@ export default function AddItemModal({
       });
       console.log("Item saved!");
       reset();
+      setImageFile(null);
+      setImagePreview(null);
       onOpenChange(false);
     } catch (error) {
       console.error("Error adding item:", error);
@@ -178,7 +207,43 @@ export default function AddItemModal({
                     </TooltipContent>
                   </Tooltip>
                 </div>
-                <Input id="picture" type="file" />
+                <Input
+                  id="picture"
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0] || null;
+
+                    if (file) {
+                      const maxSizeInBytes = 5 * 1024 * 1024; // 5MB
+                      if (file.size > maxSizeInBytes) {
+                        alert("Image must be 5MB or smaller.");
+                        return;
+                      }
+
+                      setImageFile(file);
+                      const reader = new FileReader();
+                      reader.onloadend = () =>
+                        setImagePreview(reader.result as string);
+                      reader.readAsDataURL(file);
+                    } else {
+                      setImageFile(null);
+                      setImagePreview(null);
+                    }
+                  }}
+                />
+                <p className="text-xs text-muted-foreground mt-1">
+                  Max file size: 5MB
+                </p>
+
+                {imagePreview && (
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    className="mt-2 max-h-40 object-contain rounded"
+                  />
+                )}
               </div>
             </div>
 

@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Plus, MoreHorizontal, Loader2 } from "lucide-react";
+import Image from "next/image";
 import AddItemModal from "@/components/modals/AddItemModal";
 import Link from "next/link";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -75,10 +76,23 @@ const ItemsPage = () => {
             key={item.id}
             className="relative border p-4 rounded-lg shadow-sm"
           >
-            <AspectRatio ratio={4 / 3} className="mb-3 bg-muted rounded">
-              <div className="flex items-center justify-center w-full h-full text-sm text-muted-foreground">
-                No Image
-              </div>
+            <AspectRatio
+              ratio={1}
+              className="mb-3 rounded-xl relative overflow-hidden"
+            >
+              {item.imageUrl ? (
+                <Image
+                  src={item.imageUrl}
+                  alt={item.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  className="object-contain rounded-xl"
+                />
+              ) : (
+                <div className="bg-muted flex items-center justify-center w-full h-full text-sm text-muted-foreground">
+                  No Image
+                </div>
+              )}
             </AspectRatio>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
