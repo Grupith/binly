@@ -501,7 +501,7 @@ const Navbar = () => {
           )}
         </div>
         <Button
-          variant="outline"
+          variant="link"
           className="text-sm font-medium cursor-pointer"
           onClick={handleGoogleLoginPopup}
         >

@@ -15,13 +15,18 @@ import Image from "next/image";
 import AddItemModal from "@/components/modals/AddItemModal";
 import Link from "next/link";
 import { useInfiniteQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { getItemsPaginated } from "@/lib/firebase/items";
 import { useWorkspace } from "@/contexts/WorkspaceContext";
 import { DocumentSnapshot } from "firebase/firestore";
 import LoadingSpinner from "@/components/LoadingSpinner";
+import { doc, updateDoc } from "firebase/firestore";
+import { db } from "@/app/firebase";
 
 const ItemsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const queryClient = useQueryClient();
 
   const { currentWorkspaceId } = useWorkspace();
   const pageSize = 10;
@@ -50,6 +55,7 @@ const ItemsPage = () => {
 
   const items = data?.pages.flatMap((page) => page.items) ?? [];
 
+  // Handle loading and error states
   if (isLoading)
     return (
       <div className="text-center">
@@ -63,14 +69,17 @@ const ItemsPage = () => {
 
   return (
     <div className="px-4 space-y-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Items</h1>
-        <Button onClick={() => setIsModalOpen(true)}>
-          <Plus className="mr-1 h-4 w-4" /> Add Item
+      <header className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">All Items</h1>
+        <Button onClick={() => setIsModalOpen(true)} className="cursor-pointer">
+          <Plus className="h-4 w-4" />
+          Create
         </Button>
-      </div>
+      </header>
 
+      {/* Items grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        {/* <ItemCard /> */}
         {items.map((item) => (
           <div
             key={item.id}
@@ -105,10 +114,14 @@ const ItemsPage = () => {
                       ? "bg-yellow-100 text-yellow-800"
                       : item.status === "used"
                       ? "bg-blue-100 text-blue-800"
-                      : "bg-red-100 text-red-800"
+                      : item.status === "broken"
+                      ? "bg-red-100 text-red-800"
+                      : item.status === "archived"
+                      ? "bg-gray-200 text-gray-600"
+                      : ""
                   }`}
                 >
-                  {item.status}
+                  {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
                 </span>
               </div>
               <DropdownMenu>
@@ -125,11 +138,43 @@ const ItemsPage = () => {
                   </DropdownMenuItem>
                   <DropdownMenuItem>Edit</DropdownMenuItem>
                   <DropdownMenuItem>Move</DropdownMenuItem>
+                  {item.status !== "archived" && (
+                    <DropdownMenuItem
+                      onClick={async () => {
+                        const itemRef = doc(
+                          db,
+                          "workspaces",
+                          currentWorkspaceId!,
+                          "items",
+                          item.id
+                        );
+                        await updateDoc(itemRef, { status: "archived" });
+                        queryClient.invalidateQueries({
+                          queryKey: ["items", currentWorkspaceId],
+                        });
+                      }}
+                    >
+                      Archive
+                    </DropdownMenuItem>
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             </div>
-            <p className="text-sm text-muted-foreground">#{item.mininumber}</p>
-            <p className="mt-2 text-sm">Qty: {item.qty}</p>
+            {item.mininumber && (
+              <p className="text-sm text-muted-foreground">
+                #{item.mininumber}
+              </p>
+            )}
+            {item.sku?.trim() ? (
+              <p className="text-sm text-muted-foreground">SKU: {item.sku}</p>
+            ) : (
+              <p className="text-sm text-muted-foreground">SKU: N/A</p>
+            )}
+            {/* item qty field */}
+            <div className="flex items-baseline gap-1">
+              <p className="mt-2 text-md">Qty: {item.qty}</p>
+              <p className="mt-1 text-md">{item.unit}</p>
+            </div>
             <div className="flex flex-wrap gap-1 mt-2">
               {item.tags.map((tag) => (
                 <span

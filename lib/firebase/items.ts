@@ -35,11 +35,14 @@ export async function getItemsPaginated(
     return {
       id: doc.id,
       name: data.name,
+      description: data.description,
+      sku: data.sku,
       status: data.status,
       imageUrl: data.imageUrl,
       mininumber: data.mininumber,
       qty: data.qty,
       tags: data.tags,
+      unit: data.unit ?? "pcs",
     };
   });
 
