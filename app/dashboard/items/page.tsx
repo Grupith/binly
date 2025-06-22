@@ -9,8 +9,7 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
-import { Plus, MoreHorizontal, Loader2 } from "lucide-react";
+import { Plus, MoreHorizontal, Loader2, Package } from "lucide-react";
 import Image from "next/image";
 import AddItemModal from "@/components/modals/AddItemModal";
 import Link from "next/link";
@@ -78,117 +77,117 @@ const ItemsPage = () => {
       </header>
 
       {/* Items grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
         {/* <ItemCard /> */}
         {items.map((item) => (
           <div
             key={item.id}
-            className="relative border p-4 rounded-lg shadow-sm"
+            className="flex border p-4 rounded-lg shadow-sm gap-4 items-start overflow-hidden w-full"
           >
-            <AspectRatio
-              ratio={1}
-              className="mb-3 rounded-xl relative overflow-hidden"
-            >
+            <div className="w-20 h-20 rounded-md overflow-hidden bg-muted flex-shrink-0">
               {item.imageUrl ? (
                 <Image
                   src={item.imageUrl}
                   alt={item.name}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 33vw"
-                  className="object-contain rounded-xl"
+                  width={80}
+                  height={80}
+                  className="object-cover w-full h-full"
                 />
               ) : (
-                <div className="bg-muted flex items-center justify-center w-full h-full text-sm text-muted-foreground">
-                  No Image
+                <div className="flex items-center justify-center w-full h-full text-muted-foreground">
+                  <Package className="w-6 h-6" />
                 </div>
               )}
-            </AspectRatio>
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <h2 className="text-lg font-semibold">{item.name}</h2>
-                <span
-                  className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-                    item.status === "available"
-                      ? "bg-green-100 text-green-800"
-                      : item.status === "checked-out"
-                      ? "bg-yellow-100 text-yellow-800"
-                      : item.status === "used"
-                      ? "bg-blue-100 text-blue-800"
-                      : item.status === "broken"
-                      ? "bg-red-100 text-red-800"
-                      : item.status === "archived"
-                      ? "bg-gray-200 text-gray-600"
-                      : ""
-                  }`}
-                >
-                  {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
-                </span>
+            </div>
+            <div className="flex flex-col flex-1 min-w-0">
+              <div className="flex justify-between items-start gap-2">
+                <div className="min-w-0">
+                  <h2 className="text-lg font-semibold truncate max-w-[200px]">
+                    {item.name}
+                  </h2>
+                  <p className="text-xs sm:text-sm text-muted-foreground">
+                    {item.sku?.trim()
+                      ? `SKU: ${item.sku}`
+                      : item.mininumber
+                      ? `#${item.mininumber}`
+                      : "SKU: N/A"}
+                  </p>
+                  <p className="text-xs sm:text-sm text-foreground">
+                    Qty: {item.qty} {item.unit}
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`text-xs font-medium px-2 py-0.5 w-fit rounded-full ${
+                      item.status === "available"
+                        ? "bg-green-100 text-green-800"
+                        : item.status === "checked-out"
+                        ? "bg-yellow-100 text-yellow-800"
+                        : item.status === "used"
+                        ? "bg-blue-100 text-blue-800"
+                        : item.status === "broken"
+                        ? "bg-red-100 text-red-800"
+                        : item.status === "archived"
+                        ? "bg-gray-200 text-gray-600"
+                        : ""
+                    }`}
+                  >
+                    {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+                  </span>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button variant="outline" size="icon" className="h-8 w-8">
+                        <MoreHorizontal className="w-4 h-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuItem>
+                        <Link href={`/dashboard/items/${item.id}`}>
+                          View Details
+                        </Link>
+                      </DropdownMenuItem>
+                      <DropdownMenuItem>Edit</DropdownMenuItem>
+                      <DropdownMenuItem>Move</DropdownMenuItem>
+                      {item.status !== "archived" && (
+                        <DropdownMenuItem
+                          onClick={async () => {
+                            const itemRef = doc(
+                              db,
+                              "workspaces",
+                              currentWorkspaceId!,
+                              "items",
+                              item.id
+                            );
+                            await updateDoc(itemRef, { status: "archived" });
+                            queryClient.invalidateQueries({
+                              queryKey: ["items", currentWorkspaceId],
+                            });
+                          }}
+                        >
+                          Archive
+                        </DropdownMenuItem>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </div>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="outline" size="icon" className="h-8 w-8">
-                    <MoreHorizontal className="w-4 h-4" />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuItem>
-                    <Link href={`/dashboard/items/${item.id}`}>
-                      View Details
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>Edit</DropdownMenuItem>
-                  <DropdownMenuItem>Move</DropdownMenuItem>
-                  {item.status !== "archived" && (
-                    <DropdownMenuItem
-                      onClick={async () => {
-                        const itemRef = doc(
-                          db,
-                          "workspaces",
-                          currentWorkspaceId!,
-                          "items",
-                          item.id
-                        );
-                        await updateDoc(itemRef, { status: "archived" });
-                        queryClient.invalidateQueries({
-                          queryKey: ["items", currentWorkspaceId],
-                        });
-                      }}
+              <div className="flex justify-between items-center mt-2">
+                <div className="flex flex-wrap gap-1">
+                  {item.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="text-xs bg-muted px-2 py-0.5 rounded-full"
                     >
-                      Archive
-                    </DropdownMenuItem>
-                  )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </div>
-            {item.mininumber && (
-              <p className="text-sm text-muted-foreground">
-                #{item.mininumber}
-              </p>
-            )}
-            {item.sku?.trim() ? (
-              <p className="text-sm text-muted-foreground">SKU: {item.sku}</p>
-            ) : (
-              <p className="text-sm text-muted-foreground">SKU: N/A</p>
-            )}
-            {/* item qty field */}
-            <div className="flex items-baseline gap-1">
-              <p className="mt-2 text-md">Qty: {item.qty}</p>
-              <p className="mt-1 text-md">{item.unit}</p>
-            </div>
-            <div className="flex flex-wrap gap-1 mt-2">
-              {item.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs bg-muted px-2 py-0.5 rounded-full"
-                >
-                  {tag}
-                </span>
-              ))}
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         ))}
       </div>
-
+      {/* Load more button */}
       {hasNextPage && (
         <div className="text-center mt-6">
           <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
