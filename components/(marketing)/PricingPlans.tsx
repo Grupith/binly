@@ -1,77 +1,82 @@
-import Link from "next/link";
+"use client";
 import React from "react";
+import Link from "next/link";
 
-const plans = [
+interface Plan {
+  name: string;
+  monthlyPrice: number | string;
+  annualPrice: number | string;
+  description: string;
+  features: string[];
+  buttonText: string;
+  highlight: boolean;
+}
+
+const plans: Plan[] = [
   {
     name: "Free",
-    price: "$0/mo",
+    monthlyPrice: 0,
+    annualPrice: 0,
     description:
-      "Track your tools or supplies in one garage, shop, or storage room — free forever.",
+      "For testing the waters, organizing the garage, or tracking your storage unit.",
     features: [
-      "100 Items",
-      "1 Workspace",
-      "1 user per workspace",
-      "Smart Search",
-      "Custom Tags",
-      "Qr Code Scanning",
-      "1 Photo per Item (5MB max)",
-      "No CSV export",
+      "1 user",
+      "50 unique items",
+      "1 location",
+      "Image uploads",
+      "Item quantity tracking",
+      "Basic search & filtering",
     ],
     buttonText: "Start Free",
     highlight: false,
   },
   {
-    name: "Pro (Personal)",
-    price: "$7/mo",
+    name: "Starter",
+    monthlyPrice: 29,
+    annualPrice: 24,
     description:
-      "Ideal for personal projects, small teams, or solo business owners tracking inventory across a couple of spaces.",
+      "Built for small shops, field crews, and weekend hustles that mean business.",
     features: [
-      "350 Items",
-      "2 Workspaces",
-      "2 users per workspace",
-      "Import from CSV",
-      "Export from CSV",
-      "Barcode Scanning",
-      "Up to 3 Photos per Item (5MB max)",
-      "Simple user roles (View/edit)",
-      "Basic Check In/Out",
+      "Everything in Free, plus:",
+      "3 users",
+      "500 unique items",
+      "3 locations",
+      "QR code scanning",
+      "Basic item export (CSV)",
+      "Activity log",
+      "Email support",
+    ],
+    buttonText: "Upgrade to Starter",
+    highlight: false,
+  },
+  {
+    name: "Pro",
+    monthlyPrice: 99,
+    annualPrice: 79,
+    description:
+      "Made for contractors, warehouses, and teams that don’t have time to lose track.",
+    features: [
+      "Everything in Starter, plus:",
+      "10 users",
+      "5,000 unique items",
+      "Unlimited locations",
+      "Barcode scanning",
+      "Priority support",
     ],
     buttonText: "Upgrade to Pro",
     highlight: true,
   },
   {
-    name: "Small Business",
-    price: "$49/mo",
-    description:
-      "Designed for trades, coffee shops, and small teams — with smart tools to track inventory, reduce mistakes, and save time every day.",
-    features: [
-      "1,500 Items",
-      "5 Workspaces",
-      "Add 10 users per workspace",
-      "Role-based access (Owner, Manager, Staff)",
-      "Check In/Out System",
-      "Pick Lists",
-      "Low Stock Alerts",
-      "Usage Logs",
-      "Priority Support Access",
-      "Printable Pick Lists",
-    ],
-    buttonText: "Get Small Biz",
-    highlight: false,
-  },
-  {
     name: "Enterprise",
-    price: "Custom",
+    monthlyPrice: "Custom",
+    annualPrice: "Custom",
     description:
-      "Contact us for custom setups, large teams, or specialized inventory needs.",
+      "For serious operations with complex needs and big expectations.",
     features: [
-      "Unlimited Items",
-      "Unlimited Workspaces",
-      "Unlimited Users",
-      "Dedicated Onboarding & Setup Support",
-      "Custom Features or Integrations",
-      "Advanced Reporting",
-      "Priority Support",
+      "For complex operations",
+      "Custom user & item limits",
+      "Dedicated account manager",
+      "Onboarding assistance",
     ],
     buttonText: "Contact Sales",
     highlight: false,
@@ -79,38 +84,80 @@ const plans = [
 ];
 
 const PricingPlans = () => {
-  const formatPrice = (price: string) => {
+  const [billing, setBilling] = React.useState<"monthly" | "annual">("annual");
+
+  const getFormattedPrice = (plan: Plan) => {
+    const price = billing === "monthly" ? plan.monthlyPrice : plan.annualPrice;
     if (price === "Custom")
       return <span className="text-4xl font-bold">Custom</span>;
-
-    const [amount, suffix] = price.split("/");
     return (
       <span className="inline-flex items-baseline gap-1">
         <span className="text-5xl font-bold text-gray-900 dark:text-white">
-          {amount}
+          ${price}
         </span>
-        <span className="text-sm text-gray-500 dark:text-gray-400">
-          /{suffix}
-        </span>
+        <span className="text-sm text-gray-500 dark:text-gray-400">/mo</span>
       </span>
     );
   };
 
   return (
-    <section id="pricing" className="py-12 bg-gray-50 dark:bg-gray-900 px-4">
-      <div className="max-w-6xl mx-auto text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+    <section
+      id="pricing"
+      className="scroll-mt-0 py-12 bg-gradient-to-br from-sky-100 via-gray-50 to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 px-4"
+    >
+      <div className="max-w-6xl mx-auto text-center mb-6">
+        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
           Pricing Plans
         </h2>
         <p className="text-gray-700 dark:text-gray-300">
-          Always free to start. Upgrade only when you&apos;re ready.
+          Start organizing. Upgrade when it&apos;s time to get serious.
         </p>
+        {/* Billing toggle for monthly/annual */}
+        <div className="flex flex-col items-center justify-center mt-4 gap-1">
+          <div className="flex items-center gap-3">
+            <span
+              className={`text-sm font-medium ${
+                billing === "monthly"
+                  ? "text-gray-900 dark:text-white"
+                  : "text-gray-400"
+              }`}
+            >
+              Monthly
+            </span>
+            <button
+              onClick={() =>
+                setBilling(billing === "monthly" ? "annual" : "monthly")
+              }
+              className={`relative cursor-pointer inline-flex items-center h-6 rounded-full w-11 transition-colors duration-300 focus:outline-none ${
+                billing === "annual" ? "bg-sky-600" : "bg-gray-300"
+              }`}
+            >
+              <span
+                className={`transform transition-transform duration-300 inline-block w-4 h-4 bg-white rounded-full ${
+                  billing === "annual" ? "translate-x-6" : "translate-x-1"
+                }`}
+              />
+            </button>
+            <span
+              className={`text-sm font-medium ${
+                billing === "annual"
+                  ? "text-gray-900 dark:text-white"
+                  : "text-gray-400"
+              }`}
+            >
+              Annual
+            </span>
+          </div>
+          <span className="text-sm text-sky-600 font-medium mt-2">
+            Save 20% with annual billing — that&apos;s 2 months free!
+          </span>
+        </div>
       </div>
-      <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
         {plans.map((plan) => (
           <div
             key={plan.name}
-            className={`relative cursor-pointer border rounded-2xl p-6 flex flex-col transition-shadow ${
+            className={`relative border rounded-2xl p-6 flex flex-col transition-shadow ${
               plan.highlight
                 ? "border-sky-500 shadow-lg bg-sky-50 dark:bg-gray-800"
                 : "border-gray-200 dark:border-gray-700 shadow-sm bg-white dark:bg-gray-800"
@@ -125,7 +172,7 @@ const PricingPlans = () => {
               {plan.name}
             </h3>
             <p className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-              {formatPrice(plan.price)}
+              {getFormattedPrice(plan)}
             </p>
             <p className="text-gray-600 dark:text-gray-300 mb-4">
               {plan.description}

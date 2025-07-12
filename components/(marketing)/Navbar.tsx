@@ -512,7 +512,7 @@ const Navbar = () => {
             variant="default"
             className="text-sm font-medium cursor-pointer"
           >
-            Get Started{" "}
+            Try now{" "}
           </Button>
         </Link>
       </div>
