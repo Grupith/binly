@@ -7,12 +7,21 @@ import { Badge } from "@/components/ui/badge";
 
 const HowItWorksSection = () => {
   return (
-    <section id="features" className="px-6 py-12 max-w-full dark:bg-gray-900">
-      <div className="text-center mb-12 py-4">
-        <h1 className="text-4xl md:text-5xl font-semibold text-gray-900 dark:text-white mb-4">
+    <section id="features" className="px-6 max-w-full dark:bg-gray-900">
+      {/* Header */}
+      <div className="text-center mb-16 pt-10">
+        <Badge
+          variant="secondary"
+          className="mb-4 bg-sky-100 text-sky-800 dark:bg-sky-900 dark:text-sky-100"
+        >
+          Core Features
+        </Badge>
+
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
           Features
-        </h1>
-        <p className="text-lg text-gray-700 dark:text-gray-300 max-w-2xl mx-auto mb-8">
+        </h2>
+
+        <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
           Track, assign, and manage your inventory with ease - no spreadsheets
           needed.
         </p>

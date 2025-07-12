@@ -4,14 +4,14 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm px-6 py-24">
+    <footer className="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-sm px-6 pb-6 pt-10">
       <div className="max-w-6xl mx-auto grid md:grid-cols-5 gap-8">
         <div>
-          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-2">
             Binly
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
-            Simple inventory management for homes, shops, and small teams.
+            Lightweight inventory management for small businesses and teams.
           </p>
         </div>
         <div>

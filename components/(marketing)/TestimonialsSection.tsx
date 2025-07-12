@@ -23,10 +23,10 @@ const TestimonialsSection = () => {
   return (
     <section className="py-20 bg-gray-100 dark:bg-gray-900 px-4">
       <div className="max-w-5xl mx-auto text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
           What people are saying
         </h2>
-        <p className="text-gray-600 dark:text-gray-300">
+        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
           Real feedback from people using Binly at home and on the job.
         </p>
       </div>

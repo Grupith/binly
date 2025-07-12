@@ -1,78 +1,101 @@
 "use client";
-
 import Link from "next/link";
-import React from "react";
-import { Button } from "../ui/button";
-
-const features = [
-  {
-    icon: "🏗️",
-    title: "Create Workspaces",
-    description:
-      "Organize by garage, job site, or storage unit — all fully separated.",
-  },
-  {
-    icon: "➕",
-    title: "Add Items Fast",
-    description:
-      "Input item names, tags, quantities, and scan barcodes or QR codes.",
-  },
-  {
-    icon: "🗃️",
-    title: "Use Smart Locations",
-    description:
-      "Assign items to bins, racks, drawers — and scan to move or view contents.",
-  },
-  {
-    icon: "🔁",
-    title: "Track Item Status",
-    description:
-      "Know if items are available, checked-out, used, broken, or lost.",
-  },
-  {
-    icon: "📦",
-    title: "Check In & Out",
-    description:
-      "Assign items to people or projects. Set due dates, get return alerts.",
-  },
-];
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 const IntroHookSection = () => {
   return (
-    <section className="py-24 text-center px-6 bg-sky-100 dark:bg-gray-900">
-      <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-        Organize your gear in minutes, not hours.
-      </h2>
-      <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto mb-16">
-        Binly removes the guesswork from tracking inventory. Add items, assign
-        tools, and check gear in/out without spreadsheets or chaos.
-      </p>
+    <section className="py-16 px-6 bg-gradient-to-b from-background to-muted/20">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <Badge
+            variant="secondary"
+            className="mb-4 bg-sky-100 text-sky-800 dark:bg-sky-900 dark:text-sky-100"
+          >
+            How it works
+          </Badge>
 
-      <div className="grid gap-10 max-w-6xl mx-auto sm:grid-cols-2 md:grid-cols-3">
-        {features.map((feature) => (
-          <div
-            key={feature.title}
-            className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm hover:shadow-md transition-all border border-gray-200 dark:border-gray-700 hover:border-sky-300"
-          >
-            <div className="text-4xl mb-4">{feature.icon}</div>
-            <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-              {feature.title}
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 text-sm leading-relaxed">
-              {feature.description}
-            </p>
-          </div>
-        ))}
-      </div>
-      <div className="max-w-2xl mx-auto pt-20 pb-10">
-        <Link href="/login">
-          <Button
-            variant="default"
-            className="shadow-sm hover:shadow-lg cursor-pointer"
-          >
-            Try it Free, No Credit Card Required
-          </Button>
-        </Link>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight mb-6">
+            How Binly Works
+          </h2>
+
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Learn how Binly helps you organize, track, and manage inventory in
+            just a few simple steps.
+          </p>
+        </div>
+
+        {/* Steps Grid */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4 mb-16">
+          {[
+            {
+              icon: "🧾",
+              title: "Add",
+              description: "Name, tag, and photo every item you want to track.",
+              step: "01",
+            },
+            {
+              icon: "📍",
+              title: "Place",
+              description:
+                "Assign items to shelves, rooms, bins, or containers.",
+              step: "02",
+            },
+            {
+              icon: "📲",
+              title: "Scan",
+              description:
+                "View or move inventory instantly with a quick QR scan.",
+              step: "03",
+            },
+            {
+              icon: "🔁",
+              title: "Track",
+              description:
+                "Check items in and out, assign to people, and keep history.",
+              step: "04",
+            },
+          ].map((item) => (
+            <Card
+              key={item.title}
+              className="relative group hover:shadow-lg transition-all duration-300 border-2 hover:border-primary/20"
+            >
+              <CardContent className="p-8 text-center h-full flex flex-col">
+                {/* Step number */}
+                <div className="absolute top-4 right-4 text-xs font-mono text-muted-foreground">
+                  {item.step}
+                </div>
+
+                {/* Icon */}
+                <div className="text-5xl mb-6 group-hover:scale-110 transition-transform duration-300">
+                  {item.icon}
+                </div>
+
+                {/* Content */}
+                <div className="flex-1">
+                  <h3 className="text-2xl font-semibold mb-4">{item.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">
+                    {item.description}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* CTA Section */}
+        <div className="text-center">
+          <Link href="/login">
+            <Button size="lg" className="text-lg px-8 py-6 h-auto">
+              Try it Free, No Credit Card Required
+            </Button>
+          </Link>
+          <p className="text-sm text-muted-foreground mt-4">
+            Join thousands of organized teams worldwide
+          </p>
+        </div>
       </div>
     </section>
   );

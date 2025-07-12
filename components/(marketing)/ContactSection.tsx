@@ -9,12 +9,12 @@ const ContactSection = () => {
       className="py-20 px-4 bg-white dark:bg-gray-900 text-gray-900 dark:text-white"
     >
       <div className="max-w-4xl mx-auto text-center mb-12">
-        <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+        <h2 className="text-4xl md:text-5xl font-bold mb-4 leading-tight">
           Contact Us
         </h2>
-        <p className="text-gray-600 dark:text-gray-300">
-          Have a question, feedback, or need help? Reach out and we’ll get back
-          to you within 1–2 business days.
+        <p className="text-lg md:text-xl text-muted-foreground mb-8">
+          Have a question, feedback, or need help? Reach out and we&apos;ll get
+          back to you within 1-2 business days.
         </p>
       </div>
       <form className="max-w-3xl mx-auto grid gap-6">
