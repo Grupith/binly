@@ -6,10 +6,14 @@ import { useWorkspace } from "@/contexts/WorkspaceContext";
 import { useQuery } from "@tanstack/react-query";
 import { getItemById } from "@/lib/firebase/items";
 import { Item } from "@/lib/types/item";
+import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function ItemPage() {
   const { itemId } = useParams();
   const { currentWorkspaceId } = useWorkspace();
+  const router = useRouter();
 
   const {
     data: item,
@@ -26,7 +30,15 @@ export default function ItemPage() {
     return <div className="p-6 text-red-500">Item not found.</div>;
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="px-4 space-y-6">
+      <Button
+        variant="ghost"
+        onClick={() => router.back()}
+        className="flex items-center gap-1 cursor-pointer"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Back
+      </Button>
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-semibold">{item.name}</h1>
         <span

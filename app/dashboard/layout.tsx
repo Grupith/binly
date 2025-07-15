@@ -38,7 +38,7 @@ export default function DashboardLayout({
             <AppSidebar />
             <SidebarInset>
               <BreadcrumbHeader />
-              <main className="flex-1 dark:bg-gray-900 dark:text-gray-200 p-4">
+              <main className="flex-1 dark:bg-gray-900 dark:text-gray-200 px-4 pt-2">
                 {children}
               </main>
             </SidebarInset>
