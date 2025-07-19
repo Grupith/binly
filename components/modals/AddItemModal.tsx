@@ -38,6 +38,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { Textarea } from "../ui/textarea";
+import { toast } from "sonner";
 
 type AddItemModalProps = {
   open: boolean;
@@ -130,6 +131,7 @@ export default function AddItemModal({
       setImageFile(null);
       setImagePreview(null);
       onOpenChange(false);
+      toast.success("Item added successfully!");
     } catch (error) {
       console.error("Error adding item:", error);
     } finally {

@@ -29,6 +29,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "@/app/firebase";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
+import { toast } from "sonner";
 
 export function NavUser({
   user,
@@ -48,6 +49,7 @@ export function NavUser({
       if (!auth) return;
       await signOut(auth);
       router.push("/"); // or wherever you want to redirect after logout
+      toast.success("Logged out successfully!");
     } catch (error) {
       console.error("Error signing out:", error);
     }

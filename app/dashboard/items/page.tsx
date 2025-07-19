@@ -29,6 +29,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import { collection, getCountFromServer } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 const ItemsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -116,6 +117,7 @@ const ItemsPage = () => {
               queryClient.invalidateQueries({
                 queryKey: ["items", currentWorkspaceId],
               });
+              toast.info("Items list refreshed!");
             }}
             variant="outline"
             disabled={isLoading}
@@ -132,10 +134,10 @@ const ItemsPage = () => {
           <Button
             onClick={() => setIsModalOpen(true)}
             className="cursor-pointer"
-            variant={"outline"}
+            variant={"default"}
           >
             <Plus className="h-4 w-4" />
-            Create
+            Add Item
           </Button>
         </div>
       </header>
