@@ -9,7 +9,13 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { Plus, MoreHorizontal, Loader2, Package } from "lucide-react";
+import {
+  Plus,
+  MoreHorizontal,
+  Loader2,
+  Package,
+  RotateCcw,
+} from "lucide-react";
 import Image from "next/image";
 import AddItemModal from "@/components/modals/AddItemModal";
 import Link from "next/link";
@@ -21,6 +27,8 @@ import { DocumentSnapshot } from "firebase/firestore";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import { doc, updateDoc } from "firebase/firestore";
 import { db } from "@/app/firebase";
+import { collection, getCountFromServer } from "firebase/firestore";
+import { useQuery } from "@tanstack/react-query";
 
 const ItemsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -52,6 +60,22 @@ const ItemsPage = () => {
     enabled: !!currentWorkspaceId,
   });
 
+  const {
+    data: totalCount,
+    isLoading: isCountLoading,
+    isError: isCountError,
+  } = useQuery({
+    queryKey: ["items-count", currentWorkspaceId],
+    queryFn: async () => {
+      if (!currentWorkspaceId) throw new Error("Missing workspace ID");
+      const workspaceRef = doc(db, "workspaces", currentWorkspaceId);
+      const itemsCollection = collection(workspaceRef, "items");
+      const snapshot = await getCountFromServer(itemsCollection);
+      return snapshot.data().count;
+    },
+    enabled: !!currentWorkspaceId,
+  });
+
   const items = data?.pages.flatMap((page) => page.items) ?? [];
 
   // Handle loading and error states
@@ -68,20 +92,55 @@ const ItemsPage = () => {
 
   return (
     <div className="px-2 sm:px-4 space-y-6">
+      {/* Items header */}
       <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">All Items</h1>
-        <Button
-          onClick={() => setIsModalOpen(true)}
-          className="cursor-pointer"
-          variant={"outline"}
-        >
-          <Plus className="h-4 w-4" />
-          Create
-        </Button>
-      </header>
+        <div>
+          <h1 className="text-2xl font-bold">
+            All Items{" "}
+            <span>
+              {"("}
+              {isCountLoading
+                ? "Loading..."
+                : isCountError
+                ? "Error"
+                : totalCount ?? "—"}
+            </span>
+            {")"}
+          </h1>
+        </div>
 
+        {/* Refresh button */}
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={() => {
+              queryClient.invalidateQueries({
+                queryKey: ["items", currentWorkspaceId],
+              });
+            }}
+            variant="outline"
+            disabled={isLoading}
+            className="cursor-pointer"
+          >
+            {isLoading ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : (
+              <RotateCcw className="w-4 h-4" />
+            )}
+          </Button>
+
+          {/* Create item button */}
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            className="cursor-pointer"
+            variant={"outline"}
+          >
+            <Plus className="h-4 w-4" />
+            Create
+          </Button>
+        </div>
+      </header>
       {/* Items grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-1 gap-5">
         {items.map((item) => (
           <Link
             key={item.id}
@@ -108,9 +167,12 @@ const ItemsPage = () => {
               <div className="flex flex-col flex-1 min-w-0">
                 <div className="flex justify-between items-start gap-2">
                   <div className="min-w-0">
-                    <h2 className="text-lg font-semibold truncate max-w-[200px]">
+                    <h2 className="text-lg font-semibold truncate">
                       {item.name}
                     </h2>
+                    <p className="text-sm text-muted-foreground truncate mb-2">
+                      {item.description || "No description available"}
+                    </p>
                     <p className="text-xs sm:text-sm text-muted-foreground">
                       {item.sku?.trim()
                         ? `SKU: ${item.sku}`
@@ -121,26 +183,27 @@ const ItemsPage = () => {
                     <p className="text-xs sm:text-sm text-foreground">
                       Qty: {item.qty} {item.unit}
                     </p>
-                  </div>
-                  <div className="flex items-center gap-2">
+
                     <span
-                      className={`text-xs font-medium px-2 py-0.5 w-fit rounded-full ${
+                      className={`mt-1 inline-block text-xs font-medium px-2 py-0.5 rounded-full ${
                         item.status === "available"
-                          ? "bg-green-100 text-green-800"
+                          ? "bg-green-200 text-green-800 dark:bg-green-900 dark:text-green-100"
                           : item.status === "checked-out"
-                          ? "bg-yellow-100 text-yellow-800"
+                          ? "bg-yellow-200 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100"
                           : item.status === "used"
-                          ? "bg-blue-100 text-blue-800"
+                          ? "bg-blue-200 text-blue-800 dark:bg-blue-900 dark:text-blue-100"
                           : item.status === "broken"
-                          ? "bg-red-100 text-red-800"
+                          ? "bg-red-200 text-red-800 dark:bg-red-900 dark:text-red-100"
                           : item.status === "archived"
-                          ? "bg-gray-200 text-gray-600"
+                          ? "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
                           : ""
                       }`}
                     >
                       {item.status.charAt(0).toUpperCase() +
                         item.status.slice(1)}
                     </span>
+                  </div>
+                  <div className="flex items-center gap-2">
                     {/* Dropdown menu for item actions */}
                     <DropdownMenu>
                       <DropdownMenuTrigger asChild>
@@ -176,6 +239,7 @@ const ItemsPage = () => {
                                 queryKey: ["items", currentWorkspaceId],
                               });
                             }}
+                            className="cursor-pointer text-destructive hover:bg-destructive/10 dark:hover:bg-destructive/20"
                           >
                             Archive
                           </DropdownMenuItem>

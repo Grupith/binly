@@ -1,6 +1,7 @@
 export type Item = {
   id: string;
   name: string;
+  description?: string;
   status: "available" | "checked-out" | "used" | "broken" | "archived";
   imageUrl?: string;
   mininumber: string;
@@ -8,4 +9,5 @@ export type Item = {
   qty: number;
   unit: string;
   tags: string[];
+  locationName?: string;
 };

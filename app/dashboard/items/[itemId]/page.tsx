@@ -30,7 +30,7 @@ export default function ItemPage() {
     return <div className="p-6 text-red-500">Item not found.</div>;
 
   return (
-    <div className="px-4 space-y-6">
+    <div className="px-4 space-y-6 max-w-4xl mx-auto">
       <Button
         variant="ghost"
         onClick={() => router.back()}
@@ -39,54 +39,96 @@ export default function ItemPage() {
         <ArrowLeft className="w-4 h-4" />
         Back
       </Button>
-      <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold">{item.name}</h1>
-        <span
-          className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-            item.status === "available"
-              ? "bg-green-100 text-green-800"
-              : item.status === "checked-out"
-              ? "bg-yellow-100 text-yellow-800"
-              : item.status === "used"
-              ? "bg-blue-100 text-blue-800"
-              : "bg-red-100 text-red-800"
-          }`}
-        >
-          {item.status}
-        </span>
-      </div>
 
-      <div className="mx-auto w-full max-w-md">
-        <AspectRatio ratio={4 / 3} className="bg-muted rounded">
-          {item.imageUrl ? (
-            <Image
-              src={item.imageUrl}
-              alt={item.name}
-              fill
-              className="object-cover rounded"
-            />
-          ) : (
-            <div className="flex items-center justify-center h-full w-full text-sm text-muted-foreground">
-              No Image
+      <div className="flex flex-col md:flex-row gap-6">
+        <div className="md:w-1/2">
+          <AspectRatio ratio={4 / 3} className="bg-muted rounded">
+            {item.imageUrl ? (
+              <Image
+                src={item.imageUrl}
+                alt={item.name}
+                fill
+                className="object-cover rounded"
+              />
+            ) : (
+              <div className="flex items-center justify-center h-full w-full text-sm text-muted-foreground">
+                No Image
+              </div>
+            )}
+          </AspectRatio>
+        </div>
+
+        <div className="md:w-1/2 space-y-4">
+          <div className="flex items-center justify-between">
+            <h1 className="text-2xl font-semibold">{item.name}</h1>
+            <span
+              className={`mt-1 inline-block text-xs font-medium px-2 py-0.5 rounded-full ${
+                item.status === "available"
+                  ? "bg-green-200 text-green-800 dark:bg-green-900 dark:text-green-100"
+                  : item.status === "checked-out"
+                  ? "bg-yellow-200 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100"
+                  : item.status === "used"
+                  ? "bg-blue-200 text-blue-800 dark:bg-blue-900 dark:text-blue-100"
+                  : item.status === "broken"
+                  ? "bg-red-200 text-red-800 dark:bg-red-900 dark:text-red-100"
+                  : item.status === "archived"
+                  ? "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+                  : ""
+              }`}
+            >
+              {item.status.charAt(0).toUpperCase() + item.status.slice(1)}
+            </span>
+          </div>
+
+          <dl className="space-y-1 text-sm text-muted-foreground">
+            <div>
+              <dt className="font-medium text-foreground">Mini Number</dt>
+              <dd>{item.mininumber ? item.mininumber : "N/A"}</dd>
+            </div>
+            <div>
+              <dt className="font-medium text-foreground">SKU</dt>
+              <dd>{item.sku}</dd>
+            </div>
+            <div>
+              <dt className="font-medium text-foreground">Quantity</dt>
+              <dd>{item.qty}</dd>
+            </div>
+            <div>
+              <dt className="font-medium text-foreground">Unit</dt>
+              <dd>{item.unit}</dd>
+            </div>
+            <div>
+              <dt className="font-medium text-foreground">Location</dt>
+              <dd>{item.locationName ?? "N/A"}</dd>
+            </div>
+          </dl>
+
+          {item.description && (
+            <div>
+              <h2 className="text-sm font-medium text-foreground mb-1">
+                Description
+              </h2>
+              <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                {item.description}
+              </p>
             </div>
           )}
-        </AspectRatio>
-      </div>
 
-      <div className="border-t pt-4 space-y-2">
-        <p className="text-sm text-muted-foreground">
-          Mini Number: {item.mininumber}
-        </p>
-        <p className="text-sm text-muted-foreground">Quantity: {item.qty}</p>
-        <div className="flex gap-2 flex-wrap">
-          {item.tags.map((tag) => (
-            <span
-              key={tag}
-              className="text-xs bg-muted px-2 py-0.5 rounded-full"
-            >
-              {tag}
-            </span>
-          ))}
+          {item.tags.length > 0 && (
+            <div className="mb-4">
+              <h2 className="text-sm font-medium text-foreground mb-1">Tags</h2>
+              <div className="flex flex-wrap gap-2">
+                {item.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="text-xs bg-muted px-2 py-0.5 rounded-full"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
