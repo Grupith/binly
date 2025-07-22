@@ -30,6 +30,7 @@ import { db } from "@/app/firebase";
 import { collection, getCountFromServer } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const ItemsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -38,6 +39,8 @@ const ItemsPage = () => {
 
   const { currentWorkspaceId } = useWorkspace();
   const pageSize = 10;
+
+  const router = useRouter();
 
   const {
     data,
@@ -176,11 +179,34 @@ const ItemsPage = () => {
                       {item.description || "No description available"}
                     </p>
                     <p className="text-xs sm:text-sm text-muted-foreground">
+                      {item.locationId && item.locationName ? (
+                        <>
+                          Location:{" "}
+                          <span
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              router.push(
+                                `/dashboard/locations/${item.locationId}`
+                              );
+                            }}
+                            className="underline text-blue-600 dark:text-blue-400 hover:opacity-80 cursor-pointer"
+                          >
+                            {item.locationName}
+                          </span>
+                        </>
+                      ) : (
+                        "No location assigned"
+                      )}
+                    </p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">
                       {item.sku?.trim()
                         ? `SKU: ${item.sku}`
                         : item.mininumber
                         ? `#${item.mininumber}`
-                        : "SKU: N/A"}
+                        : ""}
+                    </p>
+                    <p className="text-xs sm:text-sm text-muted-foreground">
+                      {item.mininumber ? `#${item.mininumber}` : ""}
                     </p>
                     <p className="text-xs sm:text-sm text-foreground">
                       Qty: {item.qty} {item.unit}

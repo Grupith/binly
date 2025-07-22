@@ -43,6 +43,8 @@ export async function getItemsPaginated(
       qty: data.qty,
       tags: data.tags,
       unit: data.unit ?? "pcs",
+      locationId: data.locationId,
+      locationName: data.locationName,
     };
   });
 

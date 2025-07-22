@@ -1,14 +1,22 @@
 "use client";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useWorkspace } from "@/contexts/WorkspaceContext";
 import { useQuery } from "@tanstack/react-query";
 import { getItemById } from "@/lib/firebase/items";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "@/app/firebase";
 import { Item } from "@/lib/types/item";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+type Location = {
+  id: string;
+  name: string;
+};
 
 export default function ItemPage() {
   const { itemId } = useParams();
@@ -24,6 +32,26 @@ export default function ItemPage() {
     queryFn: () => getItemById(currentWorkspaceId!, itemId as string),
     enabled: !!currentWorkspaceId && !!itemId,
   });
+
+  const { data: location, isLoading: loadingLocation } =
+    useQuery<Location | null>({
+      queryKey: ["location", currentWorkspaceId, item?.locationId],
+      queryFn: async () => {
+        if (!item?.locationId || !currentWorkspaceId) return null;
+        const docRef = doc(
+          db,
+          "workspaces",
+          currentWorkspaceId,
+          "locations",
+          item.locationId
+        );
+        const snap = await getDoc(docRef);
+        return snap.exists()
+          ? ({ id: snap.id, ...snap.data() } as Location)
+          : null;
+      },
+      enabled: !!item?.locationId && !!currentWorkspaceId,
+    });
 
   if (isLoading) return <div className="p-6">Loading item...</div>;
   if (isError || !item)
@@ -99,7 +127,20 @@ export default function ItemPage() {
             </div>
             <div>
               <dt className="font-medium text-foreground">Location</dt>
-              <dd>{item.locationName ?? "N/A"}</dd>
+              <dd>
+                {loadingLocation ? (
+                  "Loading..."
+                ) : location ? (
+                  <Link
+                    href={`/dashboard/locations/${location.id}`}
+                    className="text-blue-600 dark:text-blue-400 underline hover:opacity-80"
+                  >
+                    {location.name}
+                  </Link>
+                ) : (
+                  "N/A"
+                )}
+              </dd>
             </div>
           </dl>
 

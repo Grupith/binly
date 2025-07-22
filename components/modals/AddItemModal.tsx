@@ -2,7 +2,12 @@
 
 import React from "react";
 import { db } from "@/app/firebase";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  serverTimestamp,
+  getDocs,
+} from "firebase/firestore";
 import { useAuth } from "@/contexts/AuthContext";
 import { useWorkspace } from "@/contexts/WorkspaceContext";
 import {
@@ -26,7 +31,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { HelpCircle } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 import Image from "next/image";
 import { storage } from "@/app/firebase";
@@ -48,12 +53,18 @@ type AddItemModalProps = {
 type ItemFormData = {
   name: string;
   description: string;
+  locationId: string;
   sku: string;
   mininumber: string;
   qty: number;
   unit: "pcs" | "cases" | "liters" | "other";
   tags: string;
   status: "available" | "checked-out" | "used" | "broken";
+};
+
+type Location = {
+  id: string;
+  name: string;
 };
 
 export default function AddItemModal({
@@ -65,6 +76,20 @@ export default function AddItemModal({
   const { user } = useAuth();
   const { currentWorkspaceId } = useWorkspace();
   const queryClient = useQueryClient();
+
+  const { data: locations = [] } = useQuery<Location[]>({
+    queryKey: ["locations", currentWorkspaceId],
+    queryFn: async () => {
+      if (!currentWorkspaceId) return [];
+      const snap = await getDocs(
+        collection(db, "workspaces", currentWorkspaceId, "locations")
+      );
+      return snap.docs.map(
+        (doc) => ({ id: doc.id, ...doc.data() } as Location)
+      );
+    },
+    enabled: !!currentWorkspaceId,
+  });
 
   const [imageFile, setImageFile] = React.useState<File | null>(null);
   const [imagePreview, setImagePreview] = React.useState<string | null>(null);
@@ -103,6 +128,11 @@ export default function AddItemModal({
         });
       }
 
+      // Find the selected location from the locations array
+      const selectedLocation = locations.find(
+        (loc) => loc.id === data.locationId
+      );
+
       const itemData = {
         ...data,
         tags: data.tags.split(",").map((tag) => tag.trim().toLowerCase()),
@@ -111,10 +141,11 @@ export default function AddItemModal({
         unit: data.unit || "",
         sku: data.sku || "",
         mininumber: data.mininumber || "",
+        locationId: data.locationId || "",
+        locationName: selectedLocation?.name || "",
         createdAt: serverTimestamp(),
         createdBy: user?.uid || "unknown user",
         lastMovedAt: serverTimestamp(),
-        locations: {},
         imageUrl,
       };
 
@@ -185,6 +216,39 @@ export default function AddItemModal({
                   </Tooltip>
                 </div>
                 <Textarea {...register("description")} />
+              </div>
+
+              {/* Location Select field */}
+              <div>
+                <div className="flex items-center gap-1 mb-1">
+                  <Label>Location</Label>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="w-4 h-4 text-muted-foreground cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent side="right">
+                      Assign this item to a location.
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+                <Controller
+                  name="locationId"
+                  control={control}
+                  render={({ field }) => (
+                    <Select onValueChange={field.onChange} value={field.value}>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select location" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {locations.map((loc) => (
+                          <SelectItem key={loc.id} value={loc.id}>
+                            {loc.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  )}
+                />
               </div>
 
               {/* Divider */}

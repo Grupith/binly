@@ -9,5 +9,6 @@ export type Item = {
   qty: number;
   unit: string;
   tags: string[];
+  locationId?: string;
   locationName?: string;
 };
