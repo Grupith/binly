@@ -7,7 +7,6 @@ import {
   Frame,
   GalleryVerticalEnd,
   HouseIcon,
-  MapIcon,
   PieChartIcon,
   Settings2,
   SquareTerminal,
