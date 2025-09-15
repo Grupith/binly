@@ -6,6 +6,7 @@ import {
   BookOpen,
   Frame,
   GalleryVerticalEnd,
+  HouseIcon,
   MapIcon,
   PieChartIcon,
   Settings2,
@@ -57,7 +58,7 @@ const data = {
     {
       title: "Locations",
       url: "/dashboard/locations",
-      icon: MapIcon,
+      icon: HouseIcon,
     },
     {
       title: "Settings",

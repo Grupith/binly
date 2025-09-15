@@ -115,15 +115,15 @@ export default function ItemPage() {
             </div>
             <div>
               <dt className="font-medium text-foreground">SKU</dt>
-              <dd>{item.sku}</dd>
+              <dd>{item.sku ? item.sku : "N/A"}</dd>
             </div>
             <div>
               <dt className="font-medium text-foreground">Quantity</dt>
-              <dd>{item.qty}</dd>
+              <dd>{item.qty ? item.qty : "N/A"}</dd>
             </div>
             <div>
               <dt className="font-medium text-foreground">Unit</dt>
-              <dd>{item.unit}</dd>
+              <dd>{item.unit ? item.unit : "N/A"}</dd>
             </div>
             <div>
               <dt className="font-medium text-foreground">Location</dt>
@@ -164,7 +164,7 @@ export default function ItemPage() {
                     key={tag}
                     className="text-xs bg-muted px-2 py-0.5 rounded-full"
                   >
-                    {tag}
+                    {tag && tag.trim() !== "" ? tag : "N/A"}
                   </span>
                 ))}
               </div>
