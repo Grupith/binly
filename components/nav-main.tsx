@@ -72,11 +72,11 @@ export function NavMain({
               <SidebarMenuButton tooltip={item.title} asChild>
                 <a href={item.url} className="flex items-center gap-2">
                   {item.icon && <item.icon className="text-muted-foreground" />}
-                  <span className="font-medium">{item.title}</span>
+                  <span className="font-normal">{item.title}</span>
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
-          )
+          ),
         )}
       </SidebarMenu>
     </SidebarGroup>

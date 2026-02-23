@@ -82,18 +82,24 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const { user } = useAuth();
-  const { workspaces, currentWorkspaceId } = useWorkspace();
+  const { workspaces, currentWorkspaceId, isLoading } = useWorkspace();
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader className="min-h-[30px]">
-        {workspaces.length > 0 && currentWorkspaceId ? (
+      <SidebarHeader className="min-h-[44px]">
+        {isLoading ? (
+          <div className="flex items-center px-3 py-2">
+            <Skeleton className="h-6 w-40" />
+          </div>
+        ) : workspaces.length > 0 && currentWorkspaceId ? (
           <TeamSwitcher
             teams={workspaces}
             initialWorkspaceId={currentWorkspaceId}
           />
         ) : (
-          <div className="flex justify-center">...</div>
+          <div className="flex items-center px-3 py-2">
+            <Skeleton className="h-6 w-40" />
+          </div>
         )}
       </SidebarHeader>
       <SidebarContent>
