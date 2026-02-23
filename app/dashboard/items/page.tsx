@@ -33,26 +33,30 @@ import { useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 
 const SkeletonItemCard = () => (
-  <div className="flex border p-4 rounded-lg shadow-sm gap-4 items-start overflow-hidden w-full bg-gray-50 dark:bg-gray-800">
-    <div className="w-20 h-20 rounded-md overflow-hidden bg-muted flex-shrink-0">
-      <Skeleton className="w-20 h-20" />
+  <div className="group relative overflow-hidden rounded-xl border bg-gray-50 shadow-sm transition hover:shadow-md dark:bg-gray-900">
+    <div className="aspect-[4/3] w-full bg-muted">
+      <Skeleton className="h-full w-full" />
     </div>
-    <div className="flex flex-col flex-1 min-w-0">
-      <div className="flex justify-between items-start gap-2">
+
+    <div className="space-y-2 p-4">
+      <div className="flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
-          <Skeleton className="h-5 w-2/3 mb-2" />
-          <Skeleton className="h-4 w-5/6 mb-2" />
-          <Skeleton className="h-3 w-1/2 mb-1" />
-          <Skeleton className="h-3 w-1/3 mb-1" />
-          <Skeleton className="h-3 w-1/4 mb-1" />
-          <Skeleton className="h-5 w-20 mt-2 rounded-full" />
+          <Skeleton className="h-5 w-3/4" />
+          <Skeleton className="mt-2 h-4 w-full" />
+          <Skeleton className="mt-1 h-4 w-5/6" />
         </div>
         <Skeleton className="h-8 w-8 rounded-md" />
       </div>
-      <div className="flex gap-2 mt-2">
-        <Skeleton className="h-4 w-16 rounded-full" />
+
+      <div className="flex items-center justify-between gap-2">
+        <Skeleton className="h-4 w-24 rounded-full" />
+        <Skeleton className="h-4 w-20" />
+      </div>
+
+      <div className="flex flex-wrap gap-2 pt-1">
+        <Skeleton className="h-4 w-14 rounded-full" />
         <Skeleton className="h-4 w-12 rounded-full" />
-        <Skeleton className="h-4 w-20 rounded-full" />
+        <Skeleton className="h-4 w-16 rounded-full" />
       </div>
     </div>
   </div>
@@ -141,8 +145,8 @@ const ItemsPage = () => {
               {isCountLoading
                 ? "Loading..."
                 : isCountError
-                ? "Error"
-                : totalCount ?? "—"}
+                  ? "Error"
+                  : (totalCount ?? "—")}
             </span>
             {")"}
           </h1>
@@ -183,152 +187,170 @@ const ItemsPage = () => {
         </div>
       </header>
       {/* Items grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-1 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         {isFetching && !isFetchingNextPage
           ? Array.from({ length: Math.max(items.length || 0, pageSize) }).map(
-              (_, i) => <SkeletonItemCard key={`sk-${i}`} />
+              (_, i) => <SkeletonItemCard key={`sk-${i}`} />,
             )
           : items.map((item) => (
               <Link
                 key={item.id}
                 href={`/dashboard/items/${item.id}`}
-                className="block"
+                className="group relative overflow-hidden rounded-xl border bg-gray-50 shadow-sm transition hover:shadow-md hover:ring-1 hover:ring-ring/30 dark:bg-gray-900"
               >
-                {/* <ItemCard /> */}
-                <div className="flex border p-4 rounded-lg shadow-sm gap-4 items-start overflow-hidden w-full hover:ring-1 transition bg-gray-50 dark:bg-gray-800">
-                  <div className="w-20 h-20 rounded-md overflow-hidden bg-muted flex-shrink-0">
-                    {item.imageUrl ? (
-                      <Image
-                        src={item.imageUrl}
-                        alt={item.name}
-                        width={80}
-                        height={80}
-                        className="object-cover w-full h-full"
-                      />
-                    ) : (
-                      <div className="flex items-center justify-center w-full h-full bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-300">
-                        <Package className="w-6 h-6" />
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex flex-col flex-1 min-w-0">
-                    <div className="flex justify-between items-start gap-2">
-                      <div className="min-w-0">
-                        <h2 className="text-lg font-semibold truncate">
-                          {item.name}
-                        </h2>
-                        <p className="text-sm text-muted-foreground truncate mb-2">
-                          {item.description || "No description available"}
-                        </p>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          {item.locationId && item.locationName ? (
-                            <span>
-                              Location:{" "}
-                              <span className="font-medium text-primary">
-                                {item.locationName}
-                              </span>
-                            </span>
-                          ) : (
-                            "No location assigned"
-                          )}
-                        </p>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          {item.sku?.trim()
-                            ? `SKU: ${item.sku}`
-                            : item.mininumber
-                            ? `#${item.mininumber}`
-                            : ""}
-                        </p>
-                        <p className="text-xs sm:text-sm text-muted-foreground">
-                          {item.mininumber ? `#${item.mininumber}` : ""}
-                        </p>
-                        <p className="text-xs sm:text-sm text-foreground">
-                          Qty: {item.qty} {item.unit}
-                        </p>
+                {/* Image */}
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-muted">
+                  {item.imageUrl ? (
+                    <Image
+                      src={item.imageUrl}
+                      alt={item.name}
+                      fill
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+                      className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center bg-gray-200 text-gray-500 dark:bg-gray-800 dark:text-gray-300">
+                      <Package className="h-7 w-7" />
+                    </div>
+                  )}
 
-                        <span
-                          className={`mt-1 inline-block text-xs font-medium px-2 py-0.5 rounded-full ${
-                            item.status === "available"
-                              ? "bg-green-200 text-green-800 dark:bg-green-900 dark:text-green-100"
-                              : item.status === "checked-out"
-                              ? "bg-yellow-200 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100"
-                              : item.status === "used"
+                  {/* Top-right actions */}
+                  <div className="absolute right-2 top-2">
+                    <DropdownMenu>
+                      <DropdownMenuTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          className="h-8 w-8 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          }}
+                        >
+                          <MoreHorizontal className="h-4 w-4" />
+                        </Button>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent align="end">
+                        <DropdownMenuItem asChild>
+                          <Link href={`/dashboard/items/${item.id}`}>
+                            View Details
+                          </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onSelect={(e) => {
+                            e.preventDefault();
+                          }}
+                        >
+                          Edit
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          onSelect={(e) => {
+                            e.preventDefault();
+                          }}
+                        >
+                          Move
+                        </DropdownMenuItem>
+                        {item.status !== "archived" && (
+                          <DropdownMenuItem
+                            onSelect={async (e) => {
+                              e.preventDefault();
+                              const itemRef = doc(
+                                db,
+                                "workspaces",
+                                currentWorkspaceId!,
+                                "items",
+                                item.id,
+                              );
+                              await updateDoc(itemRef, {
+                                status: "archived",
+                              });
+                              queryClient.invalidateQueries({
+                                queryKey: ["items", currentWorkspaceId],
+                              });
+                            }}
+                            className="cursor-pointer text-destructive hover:bg-destructive/10 dark:hover:bg-destructive/20"
+                          >
+                            Archive
+                          </DropdownMenuItem>
+                        )}
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  </div>
+                </div>
+
+                {/* Body */}
+                <div className="space-y-2 p-4">
+                  <div className="space-y-1">
+                    <h2 className="line-clamp-1 text-base font-semibold">
+                      {item.name}
+                    </h2>
+                    <p className="line-clamp-2 text-sm text-muted-foreground">
+                      {item.description || "No description available"}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center justify-between gap-2">
+                    <span
+                      className={`inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full ${
+                        item.status === "available"
+                          ? "bg-green-200 text-green-800 dark:bg-green-900 dark:text-green-100"
+                          : item.status === "checked-out"
+                            ? "bg-yellow-200 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-100"
+                            : item.status === "used"
                               ? "bg-blue-200 text-blue-800 dark:bg-blue-900 dark:text-blue-100"
                               : item.status === "broken"
-                              ? "bg-red-200 text-red-800 dark:bg-red-900 dark:text-red-100"
-                              : item.status === "archived"
-                              ? "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
-                              : ""
-                          }`}
-                        >
-                          {item.status.charAt(0).toUpperCase() +
-                            item.status.slice(1)}
+                                ? "bg-red-200 text-red-800 dark:bg-red-900 dark:text-red-100"
+                                : item.status === "archived"
+                                  ? "bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-300"
+                                  : ""
+                      }`}
+                    >
+                      {item.status.charAt(0).toUpperCase() +
+                        item.status.slice(1)}
+                    </span>
+
+                    <p className="text-sm font-medium text-foreground">
+                      {item.qty} {item.unit}
+                    </p>
+                  </div>
+
+                  <div className="space-y-0.5 text-xs sm:text-sm text-muted-foreground">
+                    <p className="line-clamp-1">
+                      {item.locationId && item.locationName ? (
+                        <span>
+                          Location:{" "}
+                          <span className="font-medium text-primary">
+                            {item.locationName}
+                          </span>
                         </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        {/* Dropdown menu for item actions */}
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button
-                              variant="outline"
-                              size="icon"
-                              className="h-8 w-8 cursor-pointer hover:focus:ring-2 focus:ring-ring"
-                              onClick={(e) => e.stopPropagation()}
-                            >
-                              <MoreHorizontal className="w-4 h-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem>
-                              <Link href={`/dashboard/items/${item.id}`}>
-                                View Details
-                              </Link>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem>Edit</DropdownMenuItem>
-                            <DropdownMenuItem>Move</DropdownMenuItem>
-                            {item.status !== "archived" && (
-                              <DropdownMenuItem
-                                onClick={async () => {
-                                  const itemRef = doc(
-                                    db,
-                                    "workspaces",
-                                    currentWorkspaceId!,
-                                    "items",
-                                    item.id
-                                  );
-                                  await updateDoc(itemRef, {
-                                    status: "archived",
-                                  });
-                                  queryClient.invalidateQueries({
-                                    queryKey: ["items", currentWorkspaceId],
-                                  });
-                                }}
-                                className="cursor-pointer text-destructive hover:bg-destructive/10 dark:hover:bg-destructive/20"
-                              >
-                                Archive
-                              </DropdownMenuItem>
-                            )}
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center mt-2">
-                      <div className="flex flex-wrap gap-1">
-                        {item.tags.slice(0, 3).map((tag) => (
-                          <span
-                            key={tag}
-                            className="text-xs bg-gray-200 dark:bg-gray-700 px-2 py-0.5 rounded-full"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                        {item.tags.length > 3 && (
-                          <span className="text-xs text-muted-foreground">
-                            +{item.tags.length - 3} more
-                          </span>
-                        )}
-                      </div>
-                    </div>
+                      ) : (
+                        "No location assigned"
+                      )}
+                    </p>
+                    <p className="line-clamp-1">
+                      {item.sku?.trim()
+                        ? `SKU: ${item.sku}`
+                        : item.mininumber
+                          ? `#${item.mininumber}`
+                          : ""}
+                    </p>
+                  </div>
+
+                  {/* Tags */}
+                  <div className="flex flex-wrap gap-1 pt-1">
+                    {item.tags.slice(0, 3).map((tag) => (
+                      <span
+                        key={tag}
+                        className="text-xs bg-gray-200 dark:bg-gray-800 px-2 py-0.5 rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                    {item.tags.length > 3 && (
+                      <span className="text-xs text-muted-foreground">
+                        +{item.tags.length - 3} more
+                      </span>
+                    )}
                   </div>
                 </div>
               </Link>

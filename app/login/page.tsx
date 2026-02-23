@@ -12,6 +12,7 @@ import SignInButton from "@/components/(marketing)/SignInButton";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect } from "react";
+import Link from "next/link";
 
 const Login = () => {
   const { user } = useAuth();
@@ -29,10 +30,14 @@ const Login = () => {
         <Card className="w-full max-w-sm shadow-lg dark:bg-slate-900">
           <CardHeader className="text-center">
             <CardTitle className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
-              Welcome to Binly
+              Join
+              <Link href="/" className="ml-2 hover:underline">
+                Binly
+              </Link>
             </CardTitle>
             <CardDescription className="mt-1 text-sm text-muted-foreground dark:text-gray-400">
-              Manage your inventory smarter.
+              Binly is currently in beta. Sign in with Google to continue. More
+              providers coming soon!
             </CardDescription>
           </CardHeader>
           <CardContent>

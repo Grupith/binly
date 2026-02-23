@@ -22,7 +22,11 @@ export default function SignInButton() {
   };
 
   return (
-    <Button onClick={handleSignIn} className="w-full" variant="outline">
+    <Button
+      onClick={handleSignIn}
+      className="w-full cursor-pointer"
+      variant="default"
+    >
       Sign in with Google
     </Button>
   );
