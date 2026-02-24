@@ -11,12 +11,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import {
   Plus,
+  Minus,
   MoreHorizontal,
   Loader2,
   Package,
   RotateCcw,
 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import AddItemModal from "@/components/modals/AddItemModal";
 import Link from "next/link";
@@ -26,7 +28,7 @@ import { getItemsPaginated } from "@/lib/firebase/items";
 import { useWorkspace } from "@/contexts/WorkspaceContext";
 import { DocumentSnapshot } from "firebase/firestore";
 import LoadingSpinner from "@/components/LoadingSpinner";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, increment } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import { collection, getCountFromServer } from "firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
@@ -64,6 +66,13 @@ const SkeletonItemCard = () => (
 
 const ItemsPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  // Inline qty edit state
+  const [editingQtyId, setEditingQtyId] = useState<string | null>(null);
+  const [qtyDraft, setQtyDraft] = useState<string>("");
+  const [qtyPendingById, setQtyPendingById] = useState<Record<string, boolean>>(
+    {},
+  );
 
   const queryClient = useQueryClient();
 
@@ -120,6 +129,115 @@ const ItemsPage = () => {
   });
 
   const items = data?.pages.flatMap((page) => page.items) ?? [];
+
+  type ItemsInfinite = InfiniteData<{
+    items: Item[];
+    lastVisible: DocumentSnapshot | undefined;
+  }>;
+
+  const clampQty = (n: number) => {
+    if (!Number.isFinite(n)) return 0;
+    return Math.max(0, n);
+  };
+
+  const updateQty = async (itemId: string, newQty: number) => {
+    if (!currentWorkspaceId) return;
+
+    const next = clampQty(newQty);
+    setQtyPendingById((p) => ({ ...p, [itemId]: true }));
+
+    const previous = queryClient.getQueryData<ItemsInfinite>([
+      "items",
+      currentWorkspaceId,
+    ]);
+
+    // Optimistic UI update
+    queryClient.setQueryData<ItemsInfinite>(
+      ["items", currentWorkspaceId],
+      (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          pages: old.pages.map((p) => ({
+            ...p,
+            items: p.items.map((it) =>
+              it.id === itemId ? { ...it, qty: next } : it,
+            ),
+          })),
+        };
+      },
+    );
+
+    try {
+      const itemRef = doc(
+        db,
+        "workspaces",
+        currentWorkspaceId,
+        "items",
+        itemId,
+      );
+      await updateDoc(itemRef, { qty: next });
+    } catch (err) {
+      // Roll back if write fails
+      queryClient.setQueryData(["items", currentWorkspaceId], previous);
+      toast.error("Failed to update quantity");
+      throw err;
+    } finally {
+      setQtyPendingById((p) => ({ ...p, [itemId]: false }));
+    }
+  };
+
+  const bumpQty = async (itemId: string, currentQty: number, delta: number) => {
+    if (!currentWorkspaceId) return;
+
+    // Prevent negative qty (optimistic + UX guard). This does NOT fully prevent
+    // race-condition negatives server-side, but it avoids most cases.
+    const optimisticNext = clampQty(currentQty + delta);
+    const optimisticDelta = optimisticNext - currentQty;
+    if (optimisticDelta === 0) return;
+
+    setQtyPendingById((p) => ({ ...p, [itemId]: true }));
+
+    const previous = queryClient.getQueryData<ItemsInfinite>([
+      "items",
+      currentWorkspaceId,
+    ]);
+
+    // Optimistic UI update
+    queryClient.setQueryData<ItemsInfinite>(
+      ["items", currentWorkspaceId],
+      (old) => {
+        if (!old) return old;
+        return {
+          ...old,
+          pages: old.pages.map((p) => ({
+            ...p,
+            items: p.items.map((it) =>
+              it.id === itemId ? { ...it, qty: optimisticNext } : it,
+            ),
+          })),
+        };
+      },
+    );
+
+    try {
+      const itemRef = doc(
+        db,
+        "workspaces",
+        currentWorkspaceId,
+        "items",
+        itemId,
+      );
+      await updateDoc(itemRef, { qty: increment(optimisticDelta) });
+    } catch (err) {
+      // Roll back if write fails
+      queryClient.setQueryData(["items", currentWorkspaceId], previous);
+      toast.error("Failed to update quantity");
+      throw err;
+    } finally {
+      setQtyPendingById((p) => ({ ...p, [itemId]: false }));
+    }
+  };
 
   // Handle loading and error states
   if (isLoading)
@@ -308,10 +426,6 @@ const ItemsPage = () => {
                       {item.status.charAt(0).toUpperCase() +
                         item.status.slice(1)}
                     </span>
-
-                    <p className="text-sm font-medium text-foreground">
-                      {item.qty} {item.unit}
-                    </p>
                   </div>
 
                   <div className="space-y-0.5 text-xs sm:text-sm text-muted-foreground">
@@ -351,6 +465,104 @@ const ItemsPage = () => {
                         +{item.tags.length - 3} more
                       </span>
                     )}
+                  </div>
+
+                  {/* Qty controls */}
+                  <div className="mt-2 flex items-center justify-between gap-2">
+                    <span className="text-xs text-muted-foreground">Qty</span>
+
+                    <div
+                      className="flex items-center gap-2"
+                      onClick={(e) => {
+                        // Prevent navigating to the item page when interacting with qty controls.
+                        e.preventDefault();
+                        e.stopPropagation();
+                      }}
+                    >
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        className="h-8 w-8"
+                        disabled={
+                          qtyPendingById[item.id] || item.status === "archived"
+                        }
+                        onClick={async () => {
+                          // Avoid negative values. If already 0, do nothing.
+                          if (item.qty <= 0) return;
+                          await bumpQty(item.id, item.qty ?? 0, -1);
+                        }}
+                        aria-label="Decrease quantity"
+                      >
+                        <Minus className="h-4 w-4" />
+                      </Button>
+
+                      {editingQtyId === item.id ? (
+                        <Input
+                          value={qtyDraft}
+                          onChange={(e) => setQtyDraft(e.target.value)}
+                          inputMode="decimal"
+                          className="h-8 w-24 text-center"
+                          autoFocus
+                          onKeyDown={async (e) => {
+                            if (e.key === "Enter") {
+                              const next = Number(qtyDraft);
+                              await updateQty(item.id, next);
+                              setEditingQtyId(null);
+                              setQtyDraft("");
+                            }
+                            if (e.key === "Escape") {
+                              setEditingQtyId(null);
+                              setQtyDraft("");
+                            }
+                          }}
+                          onBlur={async () => {
+                            // Save on blur if user typed something.
+                            if (qtyDraft.trim().length === 0) {
+                              setEditingQtyId(null);
+                              return;
+                            }
+                            const next = Number(qtyDraft);
+                            await updateQty(item.id, next);
+                            setEditingQtyId(null);
+                            setQtyDraft("");
+                          }}
+                        />
+                      ) : (
+                        <button
+                          type="button"
+                          className="min-w-[6rem] rounded-md border bg-background px-3 py-1 text-sm font-medium tabular-nums hover:bg-accent"
+                          disabled={qtyPendingById[item.id]}
+                          onClick={() => {
+                            setEditingQtyId(item.id);
+                            setQtyDraft(String(item.qty ?? 0));
+                          }}
+                          aria-label="Edit quantity"
+                        >
+                          {qtyPendingById[item.id] ? (
+                            <Loader2 className="mx-auto h-4 w-4 animate-spin" />
+                          ) : (
+                            `${item.qty} ${item.unit}`
+                          )}
+                        </button>
+                      )}
+
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="icon"
+                        className="h-8 w-8"
+                        disabled={
+                          qtyPendingById[item.id] || item.status === "archived"
+                        }
+                        onClick={async () => {
+                          await bumpQty(item.id, item.qty ?? 0, 1);
+                        }}
+                        aria-label="Increase quantity"
+                      >
+                        <Plus className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </Link>
