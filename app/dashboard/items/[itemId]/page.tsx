@@ -18,10 +18,38 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 type Location = {
   id: string;
   name: string;
+};
+
+type ItemDetailsDraft = {
+  name: string;
+  mininumber: string;
+  sku: string;
+  unit: string;
+  description: string;
+  tagsText: string; // comma-separated tags
+};
+
+const toDraft = (item: Item): ItemDetailsDraft => {
+  return {
+    name: item.name ?? "",
+    mininumber: item.mininumber ?? "",
+    sku: item.sku ?? "",
+    unit: item.unit ?? "",
+    description: item.description ?? "",
+    tagsText: Array.isArray(item.tags) ? item.tags.join(", ") : "",
+  };
+};
+
+const normalizeTags = (tagsText: string): string[] => {
+  return tagsText
+    .split(",")
+    .map((t) => t.trim())
+    .filter((t) => t.length > 0);
 };
 
 export default function ItemPage() {
@@ -46,6 +74,10 @@ export default function ItemPage() {
   const [isEditingQty, setIsEditingQty] = React.useState(false);
   const [qtyDraft, setQtyDraft] = React.useState<string>("0");
 
+  const [isEditingDetails, setIsEditingDetails] = React.useState(false);
+  const [detailsDraft, setDetailsDraft] =
+    React.useState<ItemDetailsDraft | null>(null);
+
   React.useEffect(() => {
     const n = typeof item?.qty === "number" ? item.qty : Number(item?.qty ?? 0);
     const safe = Number.isFinite(n) ? n : 0;
@@ -53,12 +85,51 @@ export default function ItemPage() {
     setQtyDraft(String(safe));
   }, [item?.qty]);
 
+  React.useEffect(() => {
+    if (!item) return;
+    if (isEditingDetails) return;
+    setDetailsDraft(toDraft(item));
+  }, [item, isEditingDetails]);
+
   const updateQtyMutation = useMutation({
     mutationFn: async (nextQty: number) => {
       if (!currentWorkspaceId || !itemIdStr) return;
       const ref = doc(db, "workspaces", currentWorkspaceId, "items", itemIdStr);
       await updateDoc(ref, {
         qty: nextQty,
+        updatedAt: serverTimestamp(),
+      });
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: ["item", currentWorkspaceId, itemIdStr],
+      });
+    },
+  });
+
+  const updateDetailsMutation = useMutation({
+    mutationFn: async (draft: ItemDetailsDraft) => {
+      if (!currentWorkspaceId || !itemIdStr) return;
+
+      const ref = doc(db, "workspaces", currentWorkspaceId, "items", itemIdStr);
+
+      const payload: Partial<Item> = {
+        name: draft.name.trim(),
+        mininumber: draft.mininumber.trim(),
+        sku: draft.sku.trim(),
+        unit: draft.unit.trim(),
+        description: draft.description,
+        tags: normalizeTags(draft.tagsText),
+      };
+
+      // Avoid saving empty strings for optional fields (keeps Firestore cleaner)
+      if (!payload.mininumber) delete payload.mininumber;
+      if (!payload.sku) delete payload.sku;
+      if (!payload.unit) delete payload.unit;
+      if (!payload.description) delete payload.description;
+
+      await updateDoc(ref, {
+        ...payload,
         updatedAt: serverTimestamp(),
       });
     },
@@ -92,6 +163,33 @@ export default function ItemPage() {
     setQtyValue(next);
     setQtyDraft(String(next));
     updateQtyMutation.mutate(next);
+  };
+
+  const startEditDetails = () => {
+    if (!item) return;
+    setDetailsDraft(toDraft(item));
+    setIsEditingDetails(true);
+  };
+
+  const cancelEditDetails = () => {
+    if (!item) {
+      setIsEditingDetails(false);
+      setDetailsDraft(null);
+      return;
+    }
+    setDetailsDraft(toDraft(item));
+    setIsEditingDetails(false);
+  };
+
+  const saveDetails = async () => {
+    if (!detailsDraft) return;
+    // Basic guard: name is required
+    if (!detailsDraft.name.trim()) return;
+    updateDetailsMutation.mutate(detailsDraft, {
+      onSuccess: () => {
+        setIsEditingDetails(false);
+      },
+    });
   };
 
   const { data: location, isLoading: loadingLocation } =
@@ -152,7 +250,70 @@ export default function ItemPage() {
       <Card>
         <CardHeader className="space-y-3">
           <div className="flex flex-col gap-2">
-            <CardTitle className="text-2xl md:text-3xl">{item.name}</CardTitle>
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex-1">
+                {isEditingDetails && detailsDraft ? (
+                  <div className="space-y-1">
+                    <Label className="text-xs text-muted-foreground">
+                      Item name
+                    </Label>
+                    <Input
+                      value={detailsDraft.name}
+                      onChange={(e) =>
+                        setDetailsDraft({
+                          ...detailsDraft,
+                          name: e.target.value,
+                        })
+                      }
+                      className="h-10 text-base md:text-lg"
+                      placeholder="Item name"
+                    />
+                  </div>
+                ) : (
+                  <CardTitle className="text-2xl md:text-3xl">
+                    {item.name}
+                  </CardTitle>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2">
+                {isEditingDetails ? (
+                  <>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={cancelEditDetails}
+                      disabled={updateDetailsMutation.isPending}
+                      className="cursor-pointer"
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="button"
+                      onClick={saveDetails}
+                      disabled={
+                        updateDetailsMutation.isPending ||
+                        !detailsDraft?.name.trim()
+                      }
+                      className="cursor-pointer"
+                    >
+                      {updateDetailsMutation.isPending
+                        ? "Saving…"
+                        : "Save changes"}
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={startEditDetails}
+                    className="cursor-pointer"
+                  >
+                    Edit details
+                  </Button>
+                )}
+              </div>
+            </div>
 
             {/* Quantity control */}
             <div className="flex items-center gap-3">
@@ -252,19 +413,64 @@ export default function ItemPage() {
                       Mini Number
                     </div>
                     <div className="text-sm font-medium">
-                      {item.mininumber ? item.mininumber : "N/A"}
+                      {isEditingDetails && detailsDraft ? (
+                        <Input
+                          value={detailsDraft.mininumber}
+                          onChange={(e) =>
+                            setDetailsDraft({
+                              ...detailsDraft,
+                              mininumber: e.target.value,
+                            })
+                          }
+                          placeholder="Mini Number"
+                        />
+                      ) : item.mininumber ? (
+                        item.mininumber
+                      ) : (
+                        "N/A"
+                      )}
                     </div>
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground">SKU</div>
                     <div className="text-sm font-medium">
-                      {item.sku ? item.sku : "N/A"}
+                      {isEditingDetails && detailsDraft ? (
+                        <Input
+                          value={detailsDraft.sku}
+                          onChange={(e) =>
+                            setDetailsDraft({
+                              ...detailsDraft,
+                              sku: e.target.value,
+                            })
+                          }
+                          placeholder="SKU"
+                        />
+                      ) : item.sku ? (
+                        item.sku
+                      ) : (
+                        "N/A"
+                      )}
                     </div>
                   </div>
                   <div>
                     <div className="text-xs text-muted-foreground">Unit</div>
                     <div className="text-sm font-medium">
-                      {item.unit ? item.unit : "N/A"}
+                      {isEditingDetails && detailsDraft ? (
+                        <Input
+                          value={detailsDraft.unit}
+                          onChange={(e) =>
+                            setDetailsDraft({
+                              ...detailsDraft,
+                              unit: e.target.value,
+                            })
+                          }
+                          placeholder="Unit"
+                        />
+                      ) : item.unit ? (
+                        item.unit
+                      ) : (
+                        "N/A"
+                      )}
                     </div>
                   </div>
                   <div>
@@ -291,7 +497,22 @@ export default function ItemPage() {
 
               <Separator />
 
-              {item.description ? (
+              {isEditingDetails && detailsDraft ? (
+                <div className="space-y-2">
+                  <h2 className="text-sm font-medium">Description</h2>
+                  <Textarea
+                    value={detailsDraft.description}
+                    onChange={(e) =>
+                      setDetailsDraft({
+                        ...detailsDraft,
+                        description: e.target.value,
+                      })
+                    }
+                    placeholder="Add a description (optional)"
+                    className="min-h-[120px]"
+                  />
+                </div>
+              ) : item.description ? (
                 <div className="space-y-2">
                   <h2 className="text-sm font-medium">Description</h2>
                   <p className="text-sm text-muted-foreground whitespace-pre-wrap">
@@ -300,7 +521,26 @@ export default function ItemPage() {
                 </div>
               ) : null}
 
-              {item.tags.length > 0 ? (
+              {isEditingDetails && detailsDraft ? (
+                <div className="space-y-2">
+                  <h2 className="text-sm font-medium">Tags</h2>
+                  <div className="space-y-2">
+                    <Input
+                      value={detailsDraft.tagsText}
+                      onChange={(e) =>
+                        setDetailsDraft({
+                          ...detailsDraft,
+                          tagsText: e.target.value,
+                        })
+                      }
+                      placeholder="Comma-separated tags (e.g. tool, drill, milwaukee)"
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      Separate tags with commas.
+                    </p>
+                  </div>
+                </div>
+              ) : item.tags.length > 0 ? (
                 <div className="space-y-2">
                   <h2 className="text-sm font-medium">Tags</h2>
                   <div className="flex flex-wrap gap-2">
